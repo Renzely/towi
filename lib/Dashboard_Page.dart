@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:demo_app/InventoryAdd.dart';
 import 'package:demo_app/Login_Page.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
