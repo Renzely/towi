@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, file_names, use_key_in_widget_constructors
 
+import 'dart:math';
+
 import 'package:demo_app/Dashboard_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +41,14 @@ class _AddInventoryState extends State<AddInventory> {
   void dispose() {
     _dateController.dispose();
     super.dispose();
+  }
+
+  String generateInputID() {
+    var timestamp = DateTime.now().millisecondsSinceEpoch;
+    // Generate a random number between 0 and 9999
+    var random = Random().nextInt(9999);
+
+    return 'TOWI$timestamp$random';
   }
 
   @override
@@ -120,8 +130,10 @@ class _AddInventoryState extends State<AddInventory> {
                     ),
                     SizedBox(height: 8),
                     TextFormField(
+                      initialValue: generateInputID(),
+                      enabled: false,
                       decoration: InputDecoration(
-                        hintText: 'Enter Input ID',
+                        hintText: 'Auto-generated Input ID',
                       ),
                     ),
                     SizedBox(height: 16),
@@ -131,9 +143,9 @@ class _AddInventoryState extends State<AddInventory> {
                     ),
                     SizedBox(height: 8),
                     TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Enter Name',
-                      ),
+                      initialValue: '${widget.userName} ${widget.userLastName}',
+                      enabled: false,
+                      decoration: InputDecoration(),
                     ),
                     SizedBox(height: 16),
                     Text(
@@ -220,6 +232,8 @@ class _AddInventoryState extends State<AddInventory> {
                       ),
                       SizedBox(height: 8),
                       TextFormField(
+                        initialValue: 'BMP',
+                        enabled: false,
                         decoration: InputDecoration(
                           hintText: 'Enter TPA',
                         ),
@@ -414,10 +428,14 @@ class _AddInventoryState extends State<AddInventory> {
                         ElevatedButton(
                           onPressed: _isSaveEnabled
                               ? () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SKUInventory()));
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                          builder: (context) => SKUInventory(
+                                                userName: widget.userName,
+                                                userLastName:
+                                                    widget.userLastName,
+                                                userEmail: widget.userEmail,
+                                              )));
                                 }
                               : null,
                           style: ButtonStyle(
@@ -469,6 +487,15 @@ class _AddInventoryState extends State<AddInventory> {
 }
 
 class SKUInventory extends StatelessWidget {
+  final String userName;
+  final String userLastName;
+  final String userEmail;
+
+  SKUInventory({
+    required this.userName,
+    required this.userLastName,
+    required this.userEmail,
+  });
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -482,14 +509,19 @@ class SKUInventory extends StatelessWidget {
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
-            // leading: IconButton(
-            //   icon: Icon(Icons.arrow_back),
-            //   onPressed: () {
-            //     Navigator.of(context).pushReplacement(
-            //       MaterialPageRoute(builder: (context) => AddInventory()),
-            //     );
-            //   },
-            // ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) => AddInventory(
+                            userName: userName,
+                            userLastName: userLastName,
+                            userEmail: userEmail,
+                          )),
+                );
+              },
+            ),
           ),
         ));
   }
