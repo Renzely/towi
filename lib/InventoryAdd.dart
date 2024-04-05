@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, file_names, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, file_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, prefer_final_fields
 
 import 'dart:math';
 
@@ -16,6 +16,7 @@ class AddInventory extends StatefulWidget {
     required this.userLastName,
     required this.userEmail,
   });
+
   @override
   _AddInventoryState createState() => _AddInventoryState();
 }
@@ -28,6 +29,14 @@ class _AddInventoryState extends State<AddInventory> {
   late GlobalKey<FormState> _formKey;
   bool _isSaveEnabled = false;
   bool _showAdditionalInfo = false;
+  TextEditingController _monthController = TextEditingController();
+  TextEditingController _weekController = TextEditingController();
+
+  Map<String, String> accountNameMap = {
+    '1': 'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO',
+    '2': 'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA',
+    '3': 'PUREGOD PRICE CLUB - BAGUIO',
+  };
 
   @override
   void initState() {
@@ -40,14 +49,14 @@ class _AddInventoryState extends State<AddInventory> {
   @override
   void dispose() {
     _dateController.dispose();
+    _monthController.dispose();
+    _weekController.dispose();
     super.dispose();
   }
 
   String generateInputID() {
     var timestamp = DateTime.now().millisecondsSinceEpoch;
-    // Generate a random number between 0 and 9999
     var random = Random().nextInt(9999);
-
     return 'TOWI$timestamp$random';
   }
 
@@ -68,11 +77,12 @@ class _AddInventoryState extends State<AddInventory> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                    builder: (context) => Inventory(
-                          userName: widget.userName,
-                          userLastName: widget.userLastName,
-                          userEmail: widget.userEmail,
-                        )),
+                  builder: (context) => Inventory(
+                    userName: widget.userName,
+                    userLastName: widget.userLastName,
+                    userEmail: widget.userEmail,
+                  ),
+                ),
               );
             },
           ),
@@ -172,22 +182,24 @@ class _AddInventoryState extends State<AddInventory> {
                                   value: _selectedAccount,
                                   items: [
                                     DropdownMenuItem(
-                                        child: Text(
-                                            'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO'),
-                                        value: '1'),
+                                      child: Text(
+                                          'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO'),
+                                      value: '1',
+                                    ),
                                     DropdownMenuItem(
-                                        child: Text(
-                                            'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA'),
-                                        value: '2'),
+                                      child: Text(
+                                          'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA'),
+                                      value: '2',
+                                    ),
                                     DropdownMenuItem(
-                                        child:
-                                            Text('PUREGOD PRICE CLUB - BAGUIO'),
-                                        value: '3'),
+                                      child:
+                                          Text('PUREGOD PRICE CLUB - BAGUIO'),
+                                      value: '3',
+                                    ),
                                   ],
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedAccount = value;
-                                      // Check if both dropdowns have a value
                                       _isSaveEnabled =
                                           _selectedAccount != null &&
                                               _selectedPeriod != null;
@@ -206,8 +218,7 @@ class _AddInventoryState extends State<AddInventory> {
                                       onPressed: () {
                                         setState(() {
                                           _selectedAccount = null;
-                                          _selectedPeriod =
-                                              null; // Clear the selected period when account is cleared
+                                          _selectedPeriod = null;
                                           _showAdditionalInfo = false;
                                           _isSaveEnabled = false;
                                         });
@@ -329,22 +340,109 @@ class _AddInventoryState extends State<AddInventory> {
                                     value: _selectedPeriod,
                                     items: [
                                       DropdownMenuItem(
-                                          child: Text('Dec23-Dec29'),
-                                          value: '1'),
+                                        child: Text('Dec23-Dec29'),
+                                        value: '1',
+                                      ),
                                       DropdownMenuItem(
-                                          child: Text('Dec30-Jan05'),
-                                          value: '2'),
+                                        child: Text('Dec30-Jan05'),
+                                        value: '2',
+                                      ),
                                       DropdownMenuItem(
-                                          child: Text('Jan06-Jan12'),
-                                          value: '3'),
+                                        child: Text('Jan06-Jan12'),
+                                        value: '3',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Jan13-Jan19'),
+                                        value: '4',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Jan20-Jan26'),
+                                        value: '5',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Jan27-Feb02'),
+                                        value: '6',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Feb03-Feb09'),
+                                        value: '7',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Feb10-Feb09'),
+                                        value: '8',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Feb17-Feb23'),
+                                        value: '9',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text('Feb24-Mar01'),
+                                        value: '10',
+                                      ),
                                     ],
                                     onChanged: (value) {
                                       setState(() {
                                         _selectedPeriod = value;
-                                        // Check if both dropdowns have a value
                                         _isSaveEnabled =
                                             _selectedAccount != null &&
                                                 _selectedPeriod != null;
+                                        switch (value) {
+                                          case '1':
+                                            _monthController.text = 'December';
+                                            _weekController.text = 'Week 52';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '2':
+                                            _monthController.text = 'January';
+                                            _weekController.text = 'Week 1';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '3':
+                                            _monthController.text = 'January';
+                                            _weekController.text = 'Week 2';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '4':
+                                            _monthController.text = 'January';
+                                            _weekController.text = 'Week 3';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '5':
+                                            _monthController.text = 'January';
+                                            _weekController.text = 'Week 4';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '6':
+                                            _monthController.text = 'February';
+                                            _weekController.text = 'Week 5';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '7':
+                                            _monthController.text = 'February';
+                                            _weekController.text = 'Week 6';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '8':
+                                            _monthController.text = 'February';
+                                            _weekController.text = 'Week 7';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '9':
+                                            _monthController.text = 'February';
+                                            _weekController.text = 'Week 8';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          case '10':
+                                            _monthController.text = 'March';
+                                            _weekController.text = 'Week 9';
+                                            _showAdditionalInfo = true;
+                                            break;
+                                          default:
+                                            _monthController.clear();
+                                            _weekController.clear();
+                                            _showAdditionalInfo = false;
+                                            break;
+                                        }
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -360,8 +458,7 @@ class _AddInventoryState extends State<AddInventory> {
                                         onPressed: () {
                                           setState(() {
                                             _selectedPeriod = null;
-                                            _showAdditionalInfo =
-                                                false; // Hide additional info fields when period is cleared
+                                            _showAdditionalInfo = false;
                                             _isSaveEnabled = false;
                                           });
                                         },
@@ -379,7 +476,9 @@ class _AddInventoryState extends State<AddInventory> {
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         SizedBox(height: 8),
                         TextFormField(
+                          controller: _monthController,
                           decoration: InputDecoration(
+                            enabled: false,
                             hintText: 'Enter Month',
                           ),
                         ),
@@ -389,7 +488,9 @@ class _AddInventoryState extends State<AddInventory> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextFormField(
+                          controller: _weekController,
                           decoration: InputDecoration(
+                            enabled: false,
                             hintText: 'Enter Week',
                           ),
                         ),
@@ -435,6 +536,11 @@ class _AddInventoryState extends State<AddInventory> {
                                                 userLastName:
                                                     widget.userLastName,
                                                 userEmail: widget.userEmail,
+                                                selectedAccount:
+                                                    _selectedAccount,
+                                                selectedAccountText:
+                                                    accountNameMap[
+                                                        _selectedAccount],
                                               )));
                                 }
                               : null,
@@ -490,39 +596,114 @@ class SKUInventory extends StatelessWidget {
   final String userName;
   final String userLastName;
   final String userEmail;
+  final String? selectedAccount;
+  final String? selectedAccountText;
 
   SKUInventory({
     required this.userName,
     required this.userLastName,
     required this.userEmail,
+    this.selectedAccount,
+    this.selectedAccountText,
   });
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.green[600],
-            elevation: 0,
-            title: Text(
-              'Inventory Form',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) => AddInventory(
-                            userName: userName,
-                            userLastName: userLastName,
-                            userEmail: userEmail,
-                          )),
-                );
-              },
-            ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green[600],
+          elevation: 0,
+          title: Text(
+            'Inventory Form',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-        ));
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => AddInventory(
+                    userName: userName,
+                    userLastName: userLastName,
+                    userEmail: userEmail,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                style: TextStyle(fontWeight: FontWeight.bold),
+                'Week Number',
+              ),
+              TextField(
+                decoration: InputDecoration(),
+              ),
+              SizedBox(height: 10),
+              Text(
+                style: TextStyle(fontWeight: FontWeight.bold),
+                'Account Branch Name',
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: selectedAccountText ?? '',
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'CATEGORY',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      // Add your logic for what happens when v1 is pressed
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(width: 2.0, color: Colors.green),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                    ),
+                    child: Text('v1'),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      // Add your logic for what happens when v2 is pressed
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(width: 2.0, color: Colors.green),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                    ),
+                    child: Text('v2'),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      // Add your logic for what happens when v3 is pressed
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(width: 2.0, color: Colors.green),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                    ),
+                    child: Text('v3'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
