@@ -20,15 +20,18 @@ class MongoDatabase {
 
   static Future<String> insert(MongoDemo data) async {
     try {
+      await connect(); // Ensure connection is established
       var result = await userCollection.insertOne(data.toJson());
-      if (result.isSucess) {
+      if (result.isSuccess) {
         return "Data Inserted";
       } else {
-        return "something Wrong while inserting data.";
+        return "Something went wrong while inserting data.";
       }
     } catch (e) {
       print(e.toString());
       return e.toString();
+    } finally {
+      await db.close(); // Close the database connection after insertion
     }
   }
 
