@@ -31,6 +31,7 @@ class _AddInventoryState extends State<AddInventory> {
   bool _showAdditionalInfo = false;
   TextEditingController _monthController = TextEditingController();
   TextEditingController _weekController = TextEditingController();
+  String _selectedWeek = '';
 
   Map<String, String> accountNameMap = {
     '1': 'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO',
@@ -44,6 +45,11 @@ class _AddInventoryState extends State<AddInventory> {
     _formKey = GlobalKey<FormState>();
     _dateController = TextEditingController();
     _selectedDate = DateTime.now();
+    _weekController.addListener(() {
+      setState(() {
+        _selectedWeek = _weekController.text;
+      });
+    });
   }
 
   @override
@@ -237,84 +243,84 @@ class _AddInventoryState extends State<AddInventory> {
                         'Additional Information',
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        'TPA',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        initialValue: 'BMP',
-                        enabled: false,
-                        decoration: InputDecoration(
-                          hintText: 'Enter TPA',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'ACCOUNT GROUP',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter Account Group',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'AOR',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter AOR',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'REGION',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter Region',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'ADP',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter ADP',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'CUSTOMER CODE',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter Customer Code',
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'COC',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter COC',
-                        ),
-                      ),
+                      // Text(
+                      //   'TPA',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   initialValue: 'BMP',
+                      //   enabled: false,
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter TPA',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'ACCOUNT GROUP',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter Account Group',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'AOR',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter AOR',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'REGION',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter Region',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'ADP',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter ADP',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'CUSTOMER CODE',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter Customer Code',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Text(
+                      //   'COC',
+                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(height: 8),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Enter COC',
+                      //   ),
+                      // ),
                       SizedBox(height: 8),
                       Text(
                         'PERIOD',
@@ -541,6 +547,7 @@ class _AddInventoryState extends State<AddInventory> {
                                                 selectedAccountText:
                                                     accountNameMap[
                                                         _selectedAccount],
+                                                selectedWeek: _selectedWeek,
                                               )));
                                 }
                               : null,
@@ -592,118 +599,590 @@ class _AddInventoryState extends State<AddInventory> {
   }
 }
 
-class SKUInventory extends StatelessWidget {
+class SKUInventory extends StatefulWidget {
   final String userName;
   final String userLastName;
   final String userEmail;
   final String? selectedAccount;
   final String? selectedAccountText;
+  final String selectedWeek;
 
-  SKUInventory({
-    required this.userName,
-    required this.userLastName,
-    required this.userEmail,
-    this.selectedAccount,
-    this.selectedAccountText,
-  });
+  SKUInventory(
+      {required this.userName,
+      required this.userLastName,
+      required this.userEmail,
+      this.selectedAccount,
+      this.selectedAccountText,
+      required this.selectedWeek});
+
+  @override
+  _SKUInventoryState createState() => _SKUInventoryState();
+}
+
+class _SKUInventoryState extends State<SKUInventory> {
+  bool _isDropdownVisible = false;
+  String? _selectedDropdownValue;
+  String? _productDetails;
+  String? _skuCode;
+  String? _versionSelected;
+
+  Map<String, List<String>> _categoryToSkuDescriptions = {
+    'v1': [
+      'KOPIKO COFFEE CANDY 24X175G',
+      'KOPIKO COFFEE CANDY JAR 6X560G',
+      'KOPIKO CAPPUCCINO CANDY 24X175G',
+      'FRES BARLEY MINT 24X50X3G',
+      'FRES MINT BARLEY JAR 12X2003G',
+      'FRES MINT BARLEY CANDY BIGPACK 6X1350G',
+      'FRES CHERRY CANDY, 24 X 50 X 3G',
+      'FRES CHERRY JAR, 12X 200 X 3G',
+      'FRES MINT CHERRY CANDY BIGPACK 6X1350G',
+      'FRES CANDY CANDY BIGPACK 24 X 50 X 3G',
+      'FRES GRAPE JAR, 12 X 200 X 3G',
+      'FRES APPLE PEACH 24 X 50 X 3G',
+      'FRES APPLEPEACH CANDY BIGPACK 6X1350G',
+      'FRES MIXED CANDY JAR 12 X 600G',
+      'BENG BENG CHOCOLATE 12 X 10 X 26.5G',
+      'BENG BENG SHARE IT 16 X 95G',
+      'CAL CHEESE 10X20X8.5G',
+      'CAL CHEESE 60X35G',
+      'CAL CHEESE 60X53.5G',
+      'CAL CHEESE CHEESE CHOCO 60X53.5G',
+      'CAL CHEESE CHEESE CHOCO 60X35G',
+      'MALKIST CHOCOLATE 30X10X24G',
+      'ROMA CREAM CRACKERS',
+      'WAFELLO CHOCOLATE WAFER 60X53.5G',
+      'WAFELLO CHOCOLATE WAFER 60X35G',
+      'WAFELLO BUTTER CARAMEL 60X35G',
+      'WAFELLO COCO CREME 60X35G',
+      'WAFELLO CREAMY VANILLA 20X10X20.5G PH',
+      'VALMER CHOCOLATE 12X10X54G',
+      'SUPERSTAR TRIPLE CHOCOLATE 12 X10 X 18G',
+      'DANISA BUTTER COOKIES 12X454G',
+      'WAFELLO BUTTER CARAMEL 60X53.5G',
+      'WAFELLO COCO CREME 60X53.5G',
+      'WAFELLO CREAMY VANILLA 60X48G PH',
+      'WAFELLO CHOCOLATE 48G X 60',
+      'WAFELLO CHOCOLATE 21G X 10 X 20',
+      'WAFELLO BUTTER CARAMEL 48G X 60',
+      'WAFELLO BUTTER CARAMEL 20.5G X 10 X 20',
+      'WAFELLO COCO CRÈME 48G X 60',
+      'WAFELLO COCONUT CRÈME 20.5G X 10 X 20',
+      'CAL CHEESE 60 X 48G',
+      'CAL CHEESE 20 X 10 X 20G',
+      'CAL CHEESE 20 X 20 X 8.5G',
+      'CAL CHEESE CHOCO 60 X 48G',
+      'CAL CHEESE CHOCO 20 X 10 X 20.5G',
+      'VALMER SANDWICH CHOCOLATE 12X10X36G',
+      'MALKIST CAPPUCCINO 30X10X23G PH',
+    ],
+    'v2': [
+      'KOPIKO BLACK 3 IN ONE HANGER 24 X 10 X 30G',
+      'KOPIKO BLACK 3 IN ONE POUCH 24 X 10 X 30G',
+      'KOPIKO BLACK 3 IN ONE BAG 8 X 30 X 30G',
+      'KOPIKO BLACK 3 IN ONE PROMO TWIN 12 X 10 X 2 X 30G',
+      'KOPIKO BROWN COFFEE HG 27.5G 24 X 10 X 27.5G',
+      'KOPIKO BROWN COFFEE POUCH 24 X 10 X 27.GG',
+      'KOPIKO BROWN COFFEE BAG 8 X 30 X 27.5G',
+      'KOPIKO BROWN PROMO TWIN 12 X 10 X 53G',
+      'KOPIKO CAPPUCCINO HANGER 24 X 10 X 25G',
+      'KOPIKO CAPPUCCINO POUCH 24 X 10 X 25G',
+      'KOPIKO CAPPUCCINO BAG 8 X 30 X 25G',
+      'KOPIKO L.A. COFFEE HANGER 24 X 10 X 25G',
+      'KOPIKO L.A. COFFEE POUCH 24 X 10 X 25G',
+      'KOPIKO BLANCA HANGER 24 X 10 X 25G',
+      'KOPIKO BLANCA POUCH 24 X 10 X 30G',
+      'KOPIKO BLANCA BAG 8 X 30 X 30G',
+      'KOPIKO BLANCA TWINPACK 12 X 10 X 2 X 26G',
+      'TORACAFE WHITE AND CREAMY 12 X (10 X 2) X 25G',
+      'KOPIKO CREAMY CARAMELO 12 X (10 X 2) X 25G',
+      'ENERGEN CHOCOLATE HANGER 24 X 10 X 40G',
+      'ENERGEN CHOCOLATE POUCH 24 X 10 X 40G',
+      'ENERGEN CHOCOLATE BAG 8 X 30 X 40G',
+      'ENERGEN CHOCOLATE VANILLA HANGER 24 X 10 X 40G',
+      'ENERGEN CHOCOLATE VANILLA POUCH 24 X 10 X 40G',
+      'ENERGEN CHOCOLATE VANILLA BAG 8 X 30 X 40G',
+      'ENERGEN CHAMPION NBA HANGER 24 X 10 X 35G',
+      'ENERGEN PADESAL MATE 24 X 10 X 30G',
+      'ENERGEN CHAMPION 12 X 10 X 2 X 35G PH'
+          'KOPIKO CAFE MOCHA TP 12 X 10 X (2 X 25.5G) PH'
+          'ENERGEN CHAMPION NBA TP 15 X 8 X 2 X 30G PH',
+      'BLACK 420011 KOPIKO BLACK 3IN1 TWINPACK 12 X 10 X 2 X 28G',
+    ],
+    'v3': [
+      'LE MINERALE 24x330ML',
+      'LE MINERALE 24x600ML',
+      'LE MINERALE 12x1500ML',
+      'LE MINERALE 4 X 5000ML',
+      'KOPIKO LUCKY DAY 24BTL X 180ML'
+    ],
+  };
+
+  Map<String, Map<String, String>> _skuToProductSkuCode = {
+    //CATEGORY V1
+
+    'KOPIKO COFFEE CANDY 24X175G': {
+      'Product': 'COFFEE SHOT',
+      'SKU Code': '326924'
+    },
+    'KOPIKO COFFEE CANDY JAR 6X560G': {
+      'Product': 'COFFEE SHOT',
+      'SKU Code': '326926'
+    },
+    'KOPIKO CAPPUCCINO CANDY 24X175G': {
+      'Product': 'COFFEE SHOT',
+      'SKU Code': '326925'
+    },
+    'FRES BARLEY MINT 24X50X3G': {'Product': 'FRES', 'SKU Code': '326446'},
+    'FRES MINT BARLEY JAR 12X2003G': {'Product': 'FRES', 'SKU Code': '329136'},
+    'FRES MINT BARLEY CANDY BIGPACK 6X1350G': {
+      'Product': 'FRES',
+      'SKU Code': ''
+    },
+    'FRES CHERRY CANDY, 24 X 50 X 3G': {
+      'Product': 'FRES',
+      'SKU Code': '326447'
+    },
+    'FRES CHERRY JAR, 12X 200 X 3G': {'Product': 'FRES', 'SKU Code': '329135'},
+    'FRES MINT CHERRY CANDY BIGPACK 6X1350G': {
+      'Product': 'FRES',
+      'SKU Code': ''
+    },
+
+    //LATEST
+
+    'FRES CANDY CANDY BIGPACK 24 X 50 X 3G': {
+      'Product': 'FRES',
+      'SKU Code': '326448'
+    },
+    'FRES GRAPE JAR, 12 X 200 X 3G': {'Product': 'FRES', 'SKU Code': '329137'},
+    'FRES APPLE PEACH 24 X 50 X 3G': {'Product': 'FRES', 'SKU Code': '329545'},
+    'FRES APPLEPEACH CANDY BIGPACK 6X1350G': {
+      'Product': 'FRES',
+      'SKU Code': ''
+    },
+    'FRES MIXED CANDY JAR 12 X 600G': {'Product': 'FRES', 'SKU Code': '320015'},
+    'BENG BENG CHOCOLATE 12 X 10 X 26.5G': {
+      'Product': 'BENG BENG',
+      'SKU Code': '329067'
+    },
+    'BENG BENG SHARE IT 16 X 95G': {
+      'Product': 'BENG BENG',
+      'SKU Code': '322583'
+    },
+    'CAL CHEESE 10X20X8.5G': {'Product': 'CAL CHEESE', 'SKU Code': '329809'},
+    'CAL CHEESE 60X35G': {'Product': 'CAL CHEESE', 'SKU Code': '322571'},
+    'CAL CHEESE 60X53.5G': {'Product': 'CAL CHEESE', 'SKU Code': '329808'},
+    'CAL CHEESE CHEESE CHOCO 60X53.5G': {
+      'Product': 'CAL CHEESE',
+      'SKU Code': '322866'
+    },
+    'CAL CHEESE CHEESE CHOCO 60X35G': {
+      'Product': 'CAL CHEESE',
+      'SKU Code': '322867'
+    },
+    'MALKIST CHOCOLATE 30X10X24G': {'Product': 'MALKIST', 'SKU Code': '321036'},
+    'ROMA CREAM CRACKERS': {'Product': 'ROMA', 'SKU Code': ''},
+    'WAFELLO CHOCOLATE WAFER 60X53.5G': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330016'
+    },
+    'WAFELLO CHOCOLATE WAFER 60X35G': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330025'
+    },
+    'WAFELLO BUTTER CARAMEL 60X35G': {
+      'Product': 'WAFELLO',
+      'SKU Code': '322871'
+    },
+    'WAFELLO COCO CREME 60X35G': {'Product': 'WAFELLO', 'SKU Code': '322868'},
+    'WAFELLO CREAMY VANILLA 20X10X20.5G PH': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330073'
+    },
+    'VALMER CHOCOLATE 12X10X54G': {'Product': 'VALMER', 'SKU Code': '321038'},
+    'SUPERSTAR TRIPLE CHOCOLATE 12 X10 X 18G': {
+      'Product': 'SUPERSTAR',
+      'SKU Code': '322894'
+    },
+    'DANISA BUTTER COOKIES 12X454G': {
+      'Product': 'DANISA',
+      'SKU Code': '329650'
+    },
+    'WAFELLO BUTTER CARAMEL 60X53.5G': {
+      'Product': 'WAFELLO',
+      'SKU Code': '322870'
+    },
+    'WAFELLO COCO CREME 60X53.5G': {'Product': 'WAFELLO', 'SKU Code': '322869'},
+    'WAFELLO CREAMY VANILLA 60X48G PH': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330060'
+    },
+    'WAFELLO CHOCOLATE 48G X 60': {'Product': 'WAFELLO', 'SKU Code': '330050'},
+    'WAFELLO CHOCOLATE 21G X 10 X 20': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330051'
+    },
+    'WAFELLO BUTTER CARAMEL 48G X 60': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330056'
+    },
+    'WAFELLO BUTTER CARAMEL 20.5G X 10 X 20': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330057'
+    },
+    'WAFELLO COCO CRÈME 48G X 60': {'Product': 'WAFELLO', 'SKU Code': '330058'},
+
+    'WAFELLO COCONUT CRÈME 20.5G X 10 X 20': {
+      'Product': 'WAFELLO',
+      'SKU Code': '330059'
+    },
+    'CAL CHEESE 60 X 48G': {'Product': 'CAL CHEESE', 'SKU Code': '330052'},
+
+    'CAL CHEESE 20 X 10 X 20G': {'Product': 'CAL CHEESE', 'SKU Code': '330053'},
+
+    'CAL CHEESE 20 X 20 X 8.5G': {
+      'Product': 'CAL CHEESE',
+      'SKU Code': '330071'
+    },
+    'CAL CHEESE CHOCO 60 X 48G': {
+      'Product': 'CAL CHEESE',
+      'SKU Code': '330054'
+    },
+    'CAL CHEESE CHOCO 20 X 10 X 20.5G': {
+      'Product': 'CAL CHEESE',
+      'SKU Code': '330055'
+    },
+    'VALMER SANDWICH CHOCOLATE 12X10X36G': {
+      'Product': 'VALMER',
+      'SKU Code': '321475'
+    },
+    'MALKIST CAPPUCCINO 30X10X23G PH': {
+      'Product': 'MALKIST',
+      'SKU Code': '321446'
+    },
+
+    //CATEGORY V2
+
+    'KOPIKO BLACK 3 IN ONE HANGER 24 X 10 X 30G': {
+      'Product': 'BLACK',
+      'SKU Code': '322628'
+    },
+    'KOPIKO BLACK 3 IN ONE POUCH 24 X 10 X 30G': {
+      'Product': 'BLACK',
+      'SKU Code': '322630'
+    },
+    'KOPIKO BLACK 3 IN ONE BAG 8 X 30 X 30G': {
+      'Product': 'BLACK',
+      'SKU Code': '322629'
+    },
+    'KOPIKO BLACK 3 IN ONE PROMO TWIN 12 X 10 X 2 X 30G': {
+      'Product': 'BLACK',
+      'SKU Code': '322627'
+    },
+
+    'KOPIKO BROWN COFFEE HG 27.5G 24 X 10 X 27.5G': {
+      'Product': 'BROWN',
+      'SKU Code': '328890'
+    },
+    'KOPIKO BROWN COFFEE POUCH 24 X 10 X 27.GG': {
+      'Product': 'BROWN',
+      'SKU Code': '329958'
+    },
+    'KOPIKO BROWN COFFEE BAG 8 X 30 X 27.5G': {
+      'Product': 'BROWN',
+      'SKU Code': '329959'
+    },
+    'KOPIKO BROWN PROMO TWIN 12 X 10 X 53G': {
+      'Product': 'BROWN',
+      'SKU Code': '329940'
+    },
+
+    'KOPIKO CAPPUCCINO HANGER 24 X 10 X 25G': {
+      'Product': 'CAPPUCCINO',
+      'SKU Code': '329701'
+    },
+    'KOPIKO CAPPUCCINO POUCH 24 X 10 X 25G': {
+      'Product': 'CAPPUCCINO',
+      'SKU Code': '329703'
+    },
+    'KOPIKO CAPPUCCINO BAG 8 X 30 X 25G': {
+      'Product': 'CAPPUCCINO',
+      'SKU Code': '329704'
+    },
+
+    'KOPIKO L.A. COFFEE HANGER 24 X 10 X 25G': {
+      'Product': 'L.A.',
+      'SKU Code': '325666'
+    },
+    'KOPIKO L.A. COFFEE POUCH 24 X 10 X 25G': {
+      'Product': 'L.A.',
+      'SKU Code': '325667'
+    },
+
+    'KOPIKO BLANCA HANGER 24 X 10 X 30G': {
+      'Product': 'BLANCA',
+      'SKU Code': '328888'
+    },
+    'KOPIKO BLANCA POUCH 24 X 10 X 30G': {
+      'Product': 'BLANCA',
+      'SKU Code': '328887'
+    },
+    'KOPIKO BLANCA BAG 8 X 30 X 30G': {
+      'Product': 'BLANCA',
+      'SKU Code': '328889'
+    },
+    'KOPIKO BLANCA TWINPACK 12 X 10 X 2 X 29G': {
+      'Product': 'BLANCA',
+      'SKU Code': '322711'
+    },
+    'TORACAFE WHITE AND CREAMY 12 X (10 X 2) X 26G': {
+      'Product': 'TORA',
+      'SKU Code': '322731'
+    },
+    'KOPIKO CREAMY CARAMELO 12 X (10 X 2) X 25G': {
+      'Product': 'CARAMELO',
+      'SKU Code': '322725'
+    },
+    'KOPIKO DOUBLE CUPS 24 X 10 X 36G': {
+      'Product': 'DOUBLE CUPS',
+      'SKU Code': '329744'
+    },
+    'ENERGEN CHOCOLATE HANGER 24 X 10 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328497'
+    },
+    'ENERGEN CHOCOLATE POUCH 24 X 10 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328492'
+    },
+    'ENERGEN CHOCOLATE BAG 8 X 30 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328493'
+    },
+    'ENERGEN CHOCOLATE VANILLA HANGER 24 X 10 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328494'
+    },
+    'ENERGEN CHOCOLATE VANILLA POUCH 24 X 10 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328495'
+    },
+    'ENERGEN CHOCOLATE VANILLA BAG 8 X 30 X 40G': {
+      'Product': 'ENERGEN',
+      'SKU Code': '328496'
+    },
+    'ENERGEN CHAMPION NBA HANGER 24 X 10 X 35G': {
+      'Product': 'CHAMPION',
+      'SKU Code': '325945'
+    },
+    'ENERGEN PADESAL MATE 24 X 10 X 30G': {
+      'Product': 'EPM',
+      'SKU Code': '325920'
+    },
+    'ENERGEN CHAMPION 12 X 10 X 2 X 35G PH': {
+      'Product': 'CHAMPION',
+      'SKU Code': '325944'
+    },
+    'KOPIKO CAFE MOCHA TP 12 X 10 X (2 X 25.5G) PH': {
+      'Product': 'CAFÉ MOCHA',
+      'SKU Code': '324149'
+    },
+    'ENERGEN CHAMPION NBA TP 15 X 8 X 2 X 30G PH': {
+      'Product': 'CHAMPION',
+      'SKU Code': '325965'
+    },
+    'BLACK 420011 KOPIKO BLACK 3IN1 TWINPACK 12 X 10 X 2 X 28G': {
+      'Product': 'BLACK',
+      'SKU Code': '420011'
+    },
+
+    //CATEGORY V3
+
+    'LE MINERALE 24x330ML': {'Product': 'WATER', 'SKU Code': '328566'},
+    'LE MINERALE 24x600ML': {'Product': 'WATER', 'SKU Code': '328565'},
+    'LE MINERALE 12x1500ML': {'Product': 'WATER', 'SKU Code': '326770'},
+    'LE MINERALE 4 X 5000ML': {'Product': 'WATER', 'SKU Code': '324045'},
+    'KOPIKO LUCKY DAY 24BTL X 180ML': {'Product': 'KLD', 'SKU Code': '324046'},
+  };
+
+  void _toggleDropdown(String version) {
+    setState(() {
+      _versionSelected = version;
+      _isDropdownVisible = !_isDropdownVisible;
+      _selectedDropdownValue = null;
+      _productDetails = null;
+      _skuCode = null;
+    });
+  }
+
+  void _selectSKU(String? newValue) {
+    setState(() {
+      _selectedDropdownValue = newValue;
+      _productDetails = _skuToProductSkuCode[newValue!]!['Product'];
+      _skuCode = _skuToProductSkuCode[newValue]!['SKU Code'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green[600],
-          elevation: 0,
-          title: Text(
-            'Inventory Form',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green[600],
+            elevation: 0,
+            title: Text(
+              'Inventory Form',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => AddInventory(
-                    userName: userName,
-                    userLastName: userLastName,
-                    userEmail: userEmail,
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Week Number',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
-              );
-            },
+                  TextField(
+                    decoration: InputDecoration(
+                      enabled: false,
+                      hintText: widget.selectedWeek,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Account Branch Name',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      enabled: false,
+                      hintText: widget.selectedAccountText ?? '',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Category',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('v1'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(width: 2.0, color: Colors.green),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text('v1'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('v2'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(width: 2.0, color: Colors.green),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text('v2'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('v3'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(width: 2.0, color: Colors.green),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text('v3'),
+                      ),
+                    ],
+                  ),
+                  if (_isDropdownVisible && _versionSelected != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'SKU Description',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16, // Adjust as needed
+                            ),
+                          ),
+                        ),
+                        _buildDropdown(
+                          '',
+                          _selectSKU,
+                          _categoryToSkuDescriptions[_versionSelected]!,
+                        ),
+                        if (_productDetails != null) ...[
+                          SizedBox(height: 10),
+                          Text(
+                            'PRODUCTS',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextField(
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: _productDetails,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'SKU CODE',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextField(
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: _skuCode,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                ]),
+          ),
+        ));
+  }
+
+  Widget _buildDropdown(
+      String title, ValueChanged<String?> onSelect, List<String> options) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                style: TextStyle(fontWeight: FontWeight.bold),
-                'Week Number',
-              ),
-              TextField(
-                decoration: InputDecoration(),
-              ),
-              SizedBox(height: 10),
-              Text(
-                style: TextStyle(fontWeight: FontWeight.bold),
-                'Account Branch Name',
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: selectedAccountText ?? '',
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'CATEGORY',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      // Add your logic for what happens when v1 is pressed
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 2.0, color: Colors.green),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                    ),
-                    child: Text('v1'),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      // Add your logic for what happens when v2 is pressed
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 2.0, color: Colors.green),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                    ),
-                    child: Text('v2'),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      // Add your logic for what happens when v3 is pressed
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 2.0, color: Colors.green),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                    ),
-                    child: Text('v3'),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        DropdownButton<String>(
+          value: _selectedDropdownValue,
+          isExpanded: true,
+          onChanged: onSelect,
+          items: options.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         ),
-      ),
+      ],
     );
   }
 }
