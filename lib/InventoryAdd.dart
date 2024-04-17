@@ -1,14 +1,10 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, file_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, prefer_final_fields
 
 import 'dart:math';
-import 'package:demo_app/dbHelper/constant.dart';
-import 'package:demo_app/dbHelper/mongodbDraft.dart';
 import 'package:flutter/services.dart';
 import 'package:demo_app/Dashboard_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:bson/bson.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 class AddInventory extends StatefulWidget {
   final String userName;
@@ -494,6 +490,7 @@ class _AddInventoryState extends State<AddInventory> {
                           controller: _monthController,
                           decoration: InputDecoration(
                             enabled: false,
+                            hintText: 'Enter Month',
                           ),
                         ),
                         SizedBox(height: 8),
@@ -505,6 +502,7 @@ class _AddInventoryState extends State<AddInventory> {
                           controller: _weekController,
                           decoration: InputDecoration(
                             enabled: false,
+                            hintText: 'Enter Week',
                           ),
                         ),
                       ],
@@ -633,7 +631,6 @@ class _SKUInventoryState extends State<SKUInventory> {
   String? _productDetails;
   String? _skuCode;
   String? _versionSelected;
-  String? _statusSelected;
   int? _selectedNumberOfDaysOOS;
   bool _showCarriedTextField = false;
   bool _showNotCarriedTextField = false;
@@ -643,74 +640,6 @@ class _SKUInventoryState extends State<SKUInventory> {
   TextEditingController _endingController = TextEditingController();
   TextEditingController _offtakeController = TextEditingController();
   TextEditingController _inventoryDaysLevelController = TextEditingController();
-  TextEditingController _inputIdController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _accountNameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
-  TextEditingController _monthController = TextEditingController();
-  TextEditingController _categoryController = TextEditingController();
-  TextEditingController _skuDescriptionController = TextEditingController();
-  TextEditingController _productsController = TextEditingController();
-  TextEditingController _skuCodeController = TextEditingController();
-
-  void _saveInventoryItem() {
-    // Ensure _versionSelected, _statusSelected, and _selectedNumberOfDaysOOS are initialized properly
-    String version = _versionSelected ?? '';
-    String status = _statusSelected ?? '';
-    int numberOfDaysOOS = _selectedNumberOfDaysOOS ?? 0;
-
-    // Create a new InventoryItem from form inputs
-    InventoryItem newItem = InventoryItem(
-      id: ObjectId(), // You might want to generate this based on your DB setup
-      date: DateTime.now().toString(), // Assuming current date for simplicity
-      inputId: _inputIdController.text,
-      name: _nameController.text,
-      accountNameBranchManning: _accountNameController.text,
-      period: _periodController.text,
-      month: _monthController.text,
-      week: widget.selectedWeek,
-      category: _categoryController.text,
-      version: version,
-      skuDescription: _skuDescriptionController.text,
-      products: _productsController.text,
-      skuCode: _skuCodeController.text,
-      status: status,
-      beginning: double.parse(_beginningController.text).toInt(),
-      delivery: double.parse(_deliveryController.text).toInt(),
-      ending: double.parse(_endingController.text).toInt(),
-      offtake: double.parse(_offtakeController.text).toInt(),
-      inventoryDaysLevel:
-          double.parse(_inventoryDaysLevelController.text).toInt(),
-      noOfDaysOOS: numberOfDaysOOS,
-    );
-    // Save the new inventory item to the database
-    _saveToDatabase(newItem);
-  }
-
-  Future<void> _saveToDatabase(InventoryItem item) async {
-    try {
-      // Connect to your MongoDB database
-      final db = await mongo.Db.create(INVENTORY_CONN_URL);
-      await db.open();
-
-      // Get a reference to the collection where you want to save items
-      final collection = db.collection(USER_INVENTORY);
-
-      // Convert the InventoryItem to a Map using the toJson() method
-      final Map<String, dynamic> itemMap = item.toJson();
-
-      // Insert the item into the collection
-      await collection.insert(itemMap);
-
-      // Close the database connection when done
-      await db.close();
-
-      print('Inventory item saved to database');
-    } catch (e) {
-      // Handle any errors that occur during saving
-      print('Error saving inventory item: $e');
-    }
-  }
 
   Map<String, List<String>> _categoryToSkuDescriptions = {
     'v1': [
@@ -1213,7 +1142,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextField(
-                  controller: _accountNameController,
                   decoration: InputDecoration(
                     enabled: false,
                     hintText: widget.selectedWeek,
@@ -1225,7 +1153,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextField(
-                  controller: _accountNameController,
                   decoration: InputDecoration(
                     enabled: false,
                     hintText: widget.selectedAccountText ?? '',
@@ -1272,7 +1199,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                     ),
                   ],
                 ),
-                // Add text fields where user input is expected, and assign controllers
                 if (_isDropdownVisible && _versionSelected != null)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1300,8 +1226,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                         ),
                         TextField(
                           enabled: false,
-                          controller:
-                              _productsController, // Assigning controller
                           decoration: InputDecoration(
                             hintText: _productDetails,
                           ),
@@ -1313,8 +1237,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                         ),
                         TextField(
                           enabled: false,
-                          controller:
-                              _skuCodeController, // Assigning controller
                           decoration: InputDecoration(
                             hintText: _skuCode,
                           ),
@@ -1361,7 +1283,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                       ),
                   ],
                 ),
-
                 if (_showCarriedTextField)
                   TextField(
                     controller: _beginningController,
@@ -1455,26 +1376,26 @@ class _SKUInventoryState extends State<SKUInventory> {
                         );
                       }),
                     ),
-                // if (_showNotCarriedTextField)
-                //   TextField(
-                //     decoration: InputDecoration(
-                //       labelText: 'Beginning',
-                //       labelStyle: TextStyle(
-                //         fontWeight: FontWeight.bold,
-                //         fontSize: 14, // Adjust size as needed
-                //       ),
-                //     ),
-                //   ),
-                // if (_showDelistedTextField)
-                //   TextField(
-                //     decoration: InputDecoration(
-                //       labelText: 'Beginning',
-                //       labelStyle: TextStyle(
-                //         fontWeight: FontWeight.bold,
-                //         fontSize: 14, // Adjust size as needed
-                //       ),
-                //     ),
-                //   ),
+                if (_showNotCarriedTextField)
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Beginning',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14, // Adjust size as needed
+                      ),
+                    ),
+                  ),
+                if (_showDelistedTextField)
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Beginning',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14, // Adjust size as needed
+                      ),
+                    ),
+                  ),
                 SizedBox(height: 20),
                 if (_showCarriedTextField ||
                     _showNotCarriedTextField ||
@@ -1509,7 +1430,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       SizedBox(width: 20),
                       ElevatedButton(
                         onPressed: () {
-                          _saveInventoryItem();
+                          // Back button action
                         },
                         style: ButtonStyle(
                           padding:
