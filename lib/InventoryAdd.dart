@@ -559,7 +559,6 @@ class _SKUInventoryState extends State<SKUInventory> {
   String? _skuCode;
   String? _versionSelected;
   String? _statusSelected;
-
   int? _selectedNumberOfDaysOOS;
   bool _showCarriedTextField = false;
   bool _showNotCarriedTextField = false;
@@ -573,7 +572,6 @@ class _SKUInventoryState extends State<SKUInventory> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
   TextEditingController _periodController = TextEditingController();
-  TextEditingController _categoryController = TextEditingController();
   TextEditingController _skuDescriptionController = TextEditingController();
   TextEditingController _productsController = TextEditingController();
   TextEditingController _skuCodeController = TextEditingController();
@@ -581,8 +579,27 @@ class _SKUInventoryState extends State<SKUInventory> {
   void _saveInventoryItem() {
     // Ensure _versionSelected, _statusSelected, and _selectedNumberOfDaysOOS are initialized properly
     String version = _versionSelected ?? '';
-    String status = _statusSelected ?? '';
+    String status = _statusSelected ?? ''; // Ensure _statusSelected is not null
     int numberOfDaysOOS = _selectedNumberOfDaysOOS ?? 0;
+
+    // Parse the numeric fields from text controllers
+    int beginning = int.tryParse(_beginningController.text) ?? 0;
+    int delivery = int.tryParse(_deliveryController.text) ?? 0;
+    int ending = int.tryParse(_endingController.text) ?? 0;
+
+    // Compute offtake
+    int offtake = beginning + delivery - ending;
+
+    // Initialize inventoryDaysLevel to zero
+    double inventoryDaysLevel = 0;
+
+    // Check if status is "Not Carried" or "Delisted"
+    if (status != "Not Carried" && status != "Delisted") {
+      // Compute inventoryDaysLevel only if status is not "Not Carried" or "Delisted"
+      if (offtake != 0 && ending != double.infinity && !ending.isNaN) {
+        inventoryDaysLevel = ending / (offtake / 7);
+      }
+    }
 
     // Create a new InventoryItem from form inputs
     InventoryItem newItem = InventoryItem(
@@ -594,18 +611,16 @@ class _SKUInventoryState extends State<SKUInventory> {
       period: _periodController.text,
       month: widget.selectedMonth,
       week: widget.selectedWeek,
-      category: _categoryController.text,
       version: version,
       skuDescription: _skuDescriptionController.text,
       products: _productsController.text,
       skuCode: _skuCodeController.text,
       status: status,
-      beginning: double.parse(_beginningController.text).toInt(),
-      delivery: double.parse(_deliveryController.text).toInt(),
-      ending: double.parse(_endingController.text).toInt(),
-      offtake: double.parse(_offtakeController.text).toInt(),
-      inventoryDaysLevel:
-          double.parse(_inventoryDaysLevelController.text).toInt(),
+      beginning: beginning,
+      delivery: delivery,
+      ending: ending,
+      offtake: offtake,
+      inventoryDaysLevel: inventoryDaysLevel.toInt(),
       noOfDaysOOS: numberOfDaysOOS,
     );
 
@@ -1040,8 +1055,9 @@ class _SKUInventoryState extends State<SKUInventory> {
     });
   }
 
-  void _toggleCarriedTextField() {
+  void _toggleCarriedTextField(String status) {
     setState(() {
+      _statusSelected = status;
       _showCarriedTextField = true;
       _showNotCarriedTextField = false;
       _showDelistedTextField = false;
@@ -1052,8 +1068,9 @@ class _SKUInventoryState extends State<SKUInventory> {
     });
   }
 
-  void _toggleNotCarriedTextField() {
+  void _toggleNotCarriedTextField(String status) {
     setState(() {
+      _statusSelected = status;
       _showCarriedTextField = false;
       _showNotCarriedTextField = true;
       _showDelistedTextField = false;
@@ -1064,8 +1081,9 @@ class _SKUInventoryState extends State<SKUInventory> {
     });
   }
 
-  void _toggleDelistedTextField() {
+  void _toggleDelistedTextField(String status) {
     setState(() {
+      _statusSelected = status;
       _showCarriedTextField = false;
       _showNotCarriedTextField = false;
       _showDelistedTextField = true;
@@ -1264,7 +1282,8 @@ class _SKUInventoryState extends State<SKUInventory> {
                   children: [
                     if (_versionSelected != null)
                       OutlinedButton(
-                        onPressed: _toggleCarriedTextField,
+                        onPressed: () => _toggleCarriedTextField(
+                            'Carried'), // Pass 'Carried' as the status
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(width: 2.0, color: Colors.green),
                           shape: RoundedRectangleBorder(
@@ -1275,7 +1294,8 @@ class _SKUInventoryState extends State<SKUInventory> {
                       ),
                     if (_versionSelected != null)
                       OutlinedButton(
-                        onPressed: _toggleNotCarriedTextField,
+                        onPressed: () => _toggleNotCarriedTextField(
+                            'Not Carried'), // Pass 'Not Carried' as the status
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(width: 2.0, color: Colors.green),
                           shape: RoundedRectangleBorder(
@@ -1286,7 +1306,8 @@ class _SKUInventoryState extends State<SKUInventory> {
                       ),
                     if (_versionSelected != null)
                       OutlinedButton(
-                        onPressed: _toggleDelistedTextField,
+                        onPressed: () => _toggleDelistedTextField(
+                            'Delisted'), // Pass 'Delisted' as the status
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(width: 2.0, color: Colors.green),
                           shape: RoundedRectangleBorder(

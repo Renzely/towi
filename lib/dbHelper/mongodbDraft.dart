@@ -59,7 +59,7 @@ class InventoryItem {
   String period;
   String month;
   String week;
-  String category;
+  // String category;
   String version;
   String skuDescription;
   String products;
@@ -81,7 +81,7 @@ class InventoryItem {
     required this.period,
     required this.month,
     required this.week,
-    required this.category,
+    // required this.category,
     required this.version,
     required this.skuDescription,
     required this.products,
@@ -104,7 +104,7 @@ class InventoryItem {
         period: json['period'],
         month: json['month'],
         week: json['week'],
-        category: json['category'],
+        // category: json['category'],
         version: json['version'],
         skuDescription: json['skuDescription'],
         products: json['products'],
@@ -127,8 +127,8 @@ class InventoryItem {
         'period': period,
         'month': month,
         'week': week,
-        'category': category,
-        'version': version,
+        // 'category': category,
+        'Category': version,
         'skuDescription': skuDescription,
         'products': products,
         'skuCode': skuCode,
