@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, file_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, prefer_final_fields
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
@@ -36,6 +36,7 @@ class _AddInventoryState extends State<AddInventory> {
   TextEditingController _monthController = TextEditingController();
   TextEditingController _weekController = TextEditingController();
   String _selectedWeek = '';
+  String _selectedMonth = '';
 
   Map<String, String> accountNameMap = {
     '1': 'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO',
@@ -56,6 +57,11 @@ class _AddInventoryState extends State<AddInventory> {
     _weekController.addListener(() {
       setState(() {
         _selectedWeek = _weekController.text;
+      });
+    });
+    _monthController.addListener(() {
+      setState(() {
+        _selectedMonth = _monthController.text;
       });
     });
   }
@@ -251,85 +257,6 @@ class _AddInventoryState extends State<AddInventory> {
                       Text(
                         'Additional Information',
                       ),
-                      SizedBox(height: 8),
-                      // Text(
-                      //   'TPA',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   initialValue: 'BMP',
-                      //   enabled: false,
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter TPA',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'ACCOUNT GROUP',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter Account Group',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'AOR',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter AOR',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'REGION',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter Region',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'ADP',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter ADP',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'CUSTOMER CODE',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter Customer Code',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Text(
-                      //   'COC',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(height: 8),
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Enter COC',
-                      //   ),
-                      // ),
                       SizedBox(height: 8),
                       Text(
                         'PERIOD',
@@ -549,12 +476,10 @@ class _AddInventoryState extends State<AddInventory> {
                                                 userLastName:
                                                     widget.userLastName,
                                                 userEmail: widget.userEmail,
-                                                selectedAccount:
-                                                    _selectedAccount,
-                                                selectedAccountText:
-                                                    accountNameMap[
-                                                        _selectedAccount],
+                                                selectedAccount: accountNameMap[
+                                                    _selectedAccount],
                                                 selectedWeek: _selectedWeek,
+                                                selectedMonth: _selectedMonth,
                                               )));
                                 }
                               : null,
@@ -611,16 +536,16 @@ class SKUInventory extends StatefulWidget {
   final String userLastName;
   final String userEmail;
   final String? selectedAccount;
-  final String? selectedAccountText;
   final String selectedWeek;
+  final String selectedMonth;
 
   SKUInventory({
     required this.userName,
     required this.userLastName,
     required this.userEmail,
     this.selectedAccount,
-    this.selectedAccountText,
     required this.selectedWeek,
+    required this.selectedMonth,
   });
 
   @override
@@ -634,6 +559,7 @@ class _SKUInventoryState extends State<SKUInventory> {
   String? _skuCode;
   String? _versionSelected;
   String? _statusSelected;
+
   int? _selectedNumberOfDaysOOS;
   bool _showCarriedTextField = false;
   bool _showNotCarriedTextField = false;
@@ -647,7 +573,6 @@ class _SKUInventoryState extends State<SKUInventory> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
   TextEditingController _periodController = TextEditingController();
-  TextEditingController _monthController = TextEditingController();
   TextEditingController _categoryController = TextEditingController();
   TextEditingController _skuDescriptionController = TextEditingController();
   TextEditingController _productsController = TextEditingController();
@@ -667,7 +592,7 @@ class _SKUInventoryState extends State<SKUInventory> {
       name: _nameController.text,
       accountNameBranchManning: _accountNameController.text,
       period: _periodController.text,
-      month: _monthController.text,
+      month: widget.selectedMonth,
       week: widget.selectedWeek,
       category: _categoryController.text,
       version: version,
@@ -683,6 +608,7 @@ class _SKUInventoryState extends State<SKUInventory> {
           double.parse(_inventoryDaysLevelController.text).toInt(),
       noOfDaysOOS: numberOfDaysOOS,
     );
+
     // Save the new inventory item to the database
     _saveToDatabase(newItem);
   }
@@ -1219,6 +1145,18 @@ class _SKUInventoryState extends State<SKUInventory> {
                     hintText: widget.selectedWeek,
                   ),
                 ),
+                // DEMO MONTH
+                Text(
+                  'Month',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _accountNameController,
+                  decoration: InputDecoration(
+                    enabled: false,
+                    hintText: widget.selectedMonth,
+                  ),
+                ),
                 SizedBox(height: 10),
                 Text(
                   'Account Branch Name',
@@ -1227,9 +1165,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                 TextField(
                   controller: _accountNameController,
                   decoration: InputDecoration(
-                    enabled: false,
-                    hintText: widget.selectedAccountText ?? '',
-                  ),
+                      enabled: false, hintText: widget.selectedAccount),
                 ),
                 SizedBox(height: 20),
                 Text(
