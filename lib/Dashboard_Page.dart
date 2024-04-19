@@ -50,25 +50,17 @@ class Inventory extends StatefulWidget {
 
 class _InventoryState extends State<Inventory> {
   late Future<List<InventoryItem>> _futureInventory;
-  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _futureInventory = _fetchInventoryData();
-    // Start the timer to reload data every 60 seconds
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
-      setState(() {
-        _futureInventory = _fetchInventoryData();
-      });
-    });
+    _fetchData();
   }
 
-  @override
-  void dispose() {
-    // Cancel the timer when the widget is disposed
-    _timer.cancel();
-    super.dispose();
+  void _fetchData() {
+    setState(() {
+      _futureInventory = _fetchInventoryData();
+    });
   }
 
   Future<List<InventoryItem>> _fetchInventoryData() async {
@@ -93,52 +85,80 @@ class _InventoryState extends State<Inventory> {
   Widget build(BuildContext context) {
     return SideBarLayout(
       title: "Inventory",
-      mainContent: FutureBuilder<List<InventoryItem>>(
-        future: _futureInventory,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            List<InventoryItem> inventoryItems = snapshot.data ?? [];
-            return ListView.builder(
-              itemCount: inventoryItems.length,
-              itemBuilder: (context, index) {
-                InventoryItem item = inventoryItems[index];
-                return ListTile(
-                  title: Text(item.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Date: ${item.date}'),
-                      Text('Input ID: ${item.inputId}'),
-                      Text('Account Name: ${item.accountNameBranchManning}'),
-                      Text('Period: ${item.period}'),
-                      Text('Month: ${item.month}'),
-                      Text('Week: ${item.week}'),
-                      Text('Category: ${item.category}'),
-                      Text('SKU Description: ${item.skuDescription}'),
-                      Text('Products: ${item.products}'),
-                      Text('SKU Code: ${item.skuCode}'),
-                      Text('Status: ${item.status}'),
-                      Text('Beginning: ${item.beginning}'),
-                      Text('Delivery: ${item.delivery}'),
-                      Text('Ending: ${item.ending}'),
-                      Text('Offtake: ${item.offtake}'),
-                      Text('Inventory Days Level: ${item.inventoryDaysLevel}'),
-                      Text('Number of Days OOS: ${item.noOfDaysOOS}'),
-                    ],
-                  ),
-                );
-              },
-            );
-          }
+      mainContent: RefreshIndicator(
+        onRefresh: () async {
+          // Manually refresh inventory data
+          _fetchData();
         },
+        child: FutureBuilder<List<InventoryItem>>(
+          future: _futureInventory,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              List<InventoryItem> inventoryItems = snapshot.data ?? [];
+              return ListView.builder(
+                itemCount: inventoryItems.length,
+                itemBuilder: (context, index) {
+                  InventoryItem item = inventoryItems[index];
+                  return ListTile(
+                    // title: Text(item.name),
+                    subtitle: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Date: ${item.date}'),
+                          Text('Input ID: ${item.inputId}'),
+                          Text('Name: ${item.name}'),
+                          Text(
+                              'Account Name: ${item.accountNameBranchManning}'),
+                          Text('Period: ${item.period}'),
+                          Text('Month: ${item.month}'),
+                          Text('Week: ${item.week}'),
+                          Text('Category: ${item.category}'),
+                          Text('SKU Description: ${item.skuDescription}'),
+                          Text('Products: ${item.products}'),
+                          Text('SKU Code: ${item.skuCode}'),
+                          Text('Status: ${item.status}'),
+                          Text('Beginning: ${item.beginning}'),
+                          Text('Delivery: ${item.delivery}'),
+                          Text('Ending: ${item.ending}'),
+                          Text('Offtake: ${item.offtake}'),
+                          Text(
+                              'Inventory Days Level: ${item.inventoryDaysLevel}'),
+                          Text('Number of Days OOS: ${item.noOfDaysOOS}'),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
       appBarActions: [
+        IconButton(
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            // Manually refresh inventory data
+            _fetchData();
+          },
+        ),
         IconButton(
           icon: Icon(
             Icons.assignment_add,
