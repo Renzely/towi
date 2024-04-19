@@ -59,8 +59,7 @@ class InventoryItem {
   String period;
   String month;
   String week;
-  // String category;
-  String version;
+  String category;
   String skuDescription;
   String products;
   String skuCode;
@@ -81,8 +80,7 @@ class InventoryItem {
     required this.period,
     required this.month,
     required this.week,
-    // required this.category,
-    required this.version,
+    required this.category,
     required this.skuDescription,
     required this.products,
     required this.skuCode,
@@ -96,26 +94,25 @@ class InventoryItem {
   });
 
   factory InventoryItem.fromJson(Map<String, dynamic> json) => InventoryItem(
-        id: json['_id'],
-        date: json['date'],
-        inputId: json['inputId'],
-        name: json['name'],
-        accountNameBranchManning: json['accountNameBranchManning'],
-        period: json['period'],
-        month: json['month'],
-        week: json['week'],
-        // category: json['category'],
-        version: json['version'],
-        skuDescription: json['skuDescription'],
-        products: json['products'],
-        skuCode: json['skuCode'],
-        status: json['status'],
-        beginning: json['beginning'],
-        delivery: json['delivery'],
-        ending: json['ending'],
-        offtake: json['offtake'],
-        inventoryDaysLevel: json['inventoryDaysLevel'],
-        noOfDaysOOS: json['noOfDaysOOS'],
+        id: json['_id'] ?? ObjectId(),
+        date: json['date'] ?? '',
+        inputId: json['inputId'] ?? '',
+        name: json['name'] ?? '',
+        accountNameBranchManning: json['accountNameBranchManning'] ?? '',
+        period: json['period'] ?? '',
+        month: json['month'] ?? '',
+        week: json['week'] ?? '',
+        category: json['category'] ?? '',
+        skuDescription: json['skuDescription'] ?? '',
+        products: json['products'] ?? '',
+        skuCode: json['skuCode'] ?? '',
+        status: json['status'] ?? '',
+        beginning: json['beginning'] ?? 0,
+        delivery: json['delivery'] ?? 0,
+        ending: json['ending'] ?? 0,
+        offtake: json['offtake'] ?? 0,
+        inventoryDaysLevel: json['inventoryDaysLevel'] ?? 0,
+        noOfDaysOOS: json['noOfDaysOOS'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -127,8 +124,7 @@ class InventoryItem {
         'period': period,
         'month': month,
         'week': week,
-        // 'category': category,
-        'Category': version,
+        'category': category,
         'skuDescription': skuDescription,
         'products': products,
         'skuCode': skuCode,

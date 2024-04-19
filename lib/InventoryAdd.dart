@@ -578,7 +578,7 @@ class _SKUInventoryState extends State<SKUInventory> {
 
   void _saveInventoryItem() {
     // Ensure _versionSelected, _statusSelected, and _selectedNumberOfDaysOOS are initialized properly
-    String version = _versionSelected ?? '';
+    String Version = _versionSelected ?? '';
     String status = _statusSelected ?? ''; // Ensure _statusSelected is not null
     int numberOfDaysOOS = _selectedNumberOfDaysOOS ?? 0;
 
@@ -611,7 +611,7 @@ class _SKUInventoryState extends State<SKUInventory> {
       period: _periodController.text,
       month: widget.selectedMonth,
       week: widget.selectedWeek,
-      version: version,
+      category: Version,
       skuDescription: _skuDescriptionController.text,
       products: _productsController.text,
       skuCode: _skuCodeController.text,
