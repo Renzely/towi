@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
@@ -554,6 +554,8 @@ class SKUInventory extends StatefulWidget {
 
 class _SKUInventoryState extends State<SKUInventory> {
   bool _isDropdownVisible = false;
+  String? _inputid;
+  String? _selectedaccountname;
   String? _selectedDropdownValue;
   String? _productDetails;
   String? _skuCode;
@@ -568,18 +570,20 @@ class _SKUInventoryState extends State<SKUInventory> {
   TextEditingController _endingController = TextEditingController();
   TextEditingController _offtakeController = TextEditingController();
   TextEditingController _inventoryDaysLevelController = TextEditingController();
-  TextEditingController _inputIdController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
   TextEditingController _periodController = TextEditingController();
-  TextEditingController _skuDescriptionController = TextEditingController();
   TextEditingController _productsController = TextEditingController();
   TextEditingController _skuCodeController = TextEditingController();
 
   void _saveInventoryItem() {
     // Ensure _versionSelected, _statusSelected, and _selectedNumberOfDaysOOS are initialized properly
+    String inputid = _inputid ?? '';
+    String accountname = _selectedaccountname ?? '';
     String Version = _versionSelected ?? '';
     String status = _statusSelected ?? ''; // Ensure _statusSelected is not null
+    String SKUDescription = _selectedDropdownValue ?? '';
+    String product = _productDetails ?? '';
+    String skucode = _skuCode ?? '';
     int numberOfDaysOOS = _selectedNumberOfDaysOOS ?? 0;
 
     // Parse the numeric fields from text controllers
@@ -605,16 +609,16 @@ class _SKUInventoryState extends State<SKUInventory> {
     InventoryItem newItem = InventoryItem(
       id: ObjectId(), // You might want to generate this based on your DB setup
       date: DateTime.now().toString(), // Assuming current date for simplicity
-      inputId: _inputIdController.text,
-      name: _nameController.text,
-      accountNameBranchManning: _accountNameController.text,
+      inputId: inputid,
+      name: '${widget.userName} ${widget.userLastName}',
+      accountNameBranchManning: accountname,
       period: _periodController.text,
       month: widget.selectedMonth,
       week: widget.selectedWeek,
       category: Version,
-      skuDescription: _skuDescriptionController.text,
-      products: _productsController.text,
-      skuCode: _skuCodeController.text,
+      skuDescription: SKUDescription,
+      products: product,
+      skuCode: skucode,
       status: status,
       beginning: beginning,
       delivery: delivery,
@@ -1440,33 +1444,47 @@ class _SKUInventoryState extends State<SKUInventory> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pop(); // Navigate back to previous screen
-                        },
-                        style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(vertical: 15),
-                          ),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                            const Size(150, 50),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        ),
-                        child: const Text(
-                          'Back',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          _saveInventoryItem();
+                        onPressed: () async {
+                          bool confirmed = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Save Confirmation'),
+                                content: Text(
+                                    'Do you want to save this inventory item?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(
+                                          false); // Return false if cancelled
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(
+                                          true); // Return true if confirmed
+                                    },
+                                    child: Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          if (confirmed ?? false) {
+                            _saveInventoryItem();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Inventory item saved'),
+                                duration: Duration(
+                                    seconds:
+                                        2), // Adjust the duration as needed
+                              ),
+                            );
+                            Navigator.pop(
+                                context); // Navigate back to the Inventory screen
+                          }
                         },
                         style: ButtonStyle(
                           padding:
