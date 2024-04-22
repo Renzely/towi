@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
@@ -283,43 +283,43 @@ class _AddInventoryState extends State<AddInventory> {
                                     items: [
                                       DropdownMenuItem(
                                         child: Text('Dec23-Dec29'),
-                                        value: '1',
+                                        value: 'Dec23-Dec29',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Dec30-Jan05'),
-                                        value: '2',
+                                        value: 'Dec30-Jan05',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Jan06-Jan12'),
-                                        value: '3',
+                                        value: 'Jan06-Jan12',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Jan13-Jan19'),
-                                        value: '4',
+                                        value: 'Jan13-Jan19',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Jan20-Jan26'),
-                                        value: '5',
+                                        value: 'Jan20-Jan26',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Jan27-Feb02'),
-                                        value: '6',
+                                        value: 'Jan27-Feb02',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Feb03-Feb09'),
-                                        value: '7',
+                                        value: 'Feb03-Feb09',
                                       ),
                                       DropdownMenuItem(
-                                        child: Text('Feb10-Feb09'),
-                                        value: '8',
+                                        child: Text('Feb10-Feb16'),
+                                        value: 'Feb10-Feb09',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Feb17-Feb23'),
-                                        value: '9',
+                                        value: 'Feb17-Feb23',
                                       ),
                                       DropdownMenuItem(
                                         child: Text('Feb24-Mar01'),
-                                        value: '10',
+                                        value: 'Feb24-Mar01',
                                       ),
                                     ],
                                     onChanged: (value) {
@@ -329,52 +329,52 @@ class _AddInventoryState extends State<AddInventory> {
                                             _selectedAccount != null &&
                                                 _selectedPeriod != null;
                                         switch (value) {
-                                          case '1':
+                                          case 'Dec23-Dec29':
                                             _monthController.text = 'December';
                                             _weekController.text = 'Week 52';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '2':
+                                          case 'Dec30-Jan05':
                                             _monthController.text = 'January';
                                             _weekController.text = 'Week 1';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '3':
+                                          case 'Jan06-Jan12':
                                             _monthController.text = 'January';
                                             _weekController.text = 'Week 2';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '4':
+                                          case 'Jan13-Jan19':
                                             _monthController.text = 'January';
                                             _weekController.text = 'Week 3';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '5':
+                                          case 'Jan20-Jan26':
                                             _monthController.text = 'January';
                                             _weekController.text = 'Week 4';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '6':
+                                          case 'Jan27-Feb02':
                                             _monthController.text = 'February';
                                             _weekController.text = 'Week 5';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '7':
+                                          case 'Feb03-Feb09':
                                             _monthController.text = 'February';
                                             _weekController.text = 'Week 6';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '8':
+                                          case 'Feb10-Feb16':
                                             _monthController.text = 'February';
                                             _weekController.text = 'Week 7';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '9':
+                                          case 'Feb17-Feb23':
                                             _monthController.text = 'February';
                                             _weekController.text = 'Week 8';
                                             _showAdditionalInfo = true;
                                             break;
-                                          case '10':
+                                          case 'Feb24-Mar01':
                                             _monthController.text = 'March';
                                             _weekController.text = 'Week 9';
                                             _showAdditionalInfo = true;
@@ -477,9 +477,13 @@ class _AddInventoryState extends State<AddInventory> {
                                                     widget.userLastName,
                                                 userEmail: widget.userEmail,
                                                 selectedAccount: accountNameMap[
-                                                    _selectedAccount],
+                                                        _selectedAccount!] ??
+                                                    '',
+                                                SelectedPeriod:
+                                                    _selectedPeriod!,
                                                 selectedWeek: _selectedWeek,
                                                 selectedMonth: _selectedMonth,
+                                                inputid: generateInputID(),
                                               )));
                                 }
                               : null,
@@ -535,18 +539,21 @@ class SKUInventory extends StatefulWidget {
   final String userName;
   final String userLastName;
   final String userEmail;
-  final String? selectedAccount;
+  final String selectedAccount;
+  final String SelectedPeriod;
   final String selectedWeek;
   final String selectedMonth;
+  final String inputid;
 
-  SKUInventory({
-    required this.userName,
-    required this.userLastName,
-    required this.userEmail,
-    this.selectedAccount,
-    required this.selectedWeek,
-    required this.selectedMonth,
-  });
+  SKUInventory(
+      {required this.userName,
+      required this.userLastName,
+      required this.userEmail,
+      required this.selectedAccount,
+      required this.SelectedPeriod,
+      required this.selectedWeek,
+      required this.selectedMonth,
+      required this.inputid});
 
   @override
   _SKUInventoryState createState() => _SKUInventoryState();
@@ -554,13 +561,13 @@ class SKUInventory extends StatefulWidget {
 
 class _SKUInventoryState extends State<SKUInventory> {
   bool _isDropdownVisible = false;
-  String? _inputid;
   String? _selectedaccountname;
   String? _selectedDropdownValue;
   String? _productDetails;
   String? _skuCode;
   String? _versionSelected;
   String? _statusSelected;
+  String? _selectedPeriod;
   int? _selectedNumberOfDaysOOS;
   bool _showCarriedTextField = false;
   bool _showNotCarriedTextField = false;
@@ -571,14 +578,13 @@ class _SKUInventoryState extends State<SKUInventory> {
   TextEditingController _offtakeController = TextEditingController();
   TextEditingController _inventoryDaysLevelController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
   TextEditingController _productsController = TextEditingController();
   TextEditingController _skuCodeController = TextEditingController();
 
   void _saveInventoryItem() {
     // Ensure _versionSelected, _statusSelected, and _selectedNumberOfDaysOOS are initialized properly
-    String inputid = _inputid ?? '';
-    String accountname = _selectedaccountname ?? '';
+    String AccountManning = _selectedaccountname ?? '';
+    String period = _selectedPeriod ?? '';
     String Version = _versionSelected ?? '';
     String status = _statusSelected ?? ''; // Ensure _statusSelected is not null
     String SKUDescription = _selectedDropdownValue ?? '';
@@ -609,10 +615,10 @@ class _SKUInventoryState extends State<SKUInventory> {
     InventoryItem newItem = InventoryItem(
       id: ObjectId(), // You might want to generate this based on your DB setup
       date: DateTime.now().toString(), // Assuming current date for simplicity
-      inputId: inputid,
+      inputId: widget.inputid,
       name: '${widget.userName} ${widget.userLastName}',
-      accountNameBranchManning: accountname,
-      period: _periodController.text,
+      accountNameBranchManning: widget.selectedAccount,
+      period: widget.SelectedPeriod,
       month: widget.selectedMonth,
       week: widget.selectedWeek,
       category: Version,
