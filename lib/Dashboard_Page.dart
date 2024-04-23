@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api
 
 import 'package:demo_app/InventoryAdd.dart';
 import 'package:demo_app/Login_Page.dart';
@@ -68,8 +68,11 @@ class _InventoryState extends State<Inventory> {
       final db = await mongo.Db.create(INVENTORY_CONN_URL);
       await db.open();
       final collection = db.collection(USER_INVENTORY);
+
+      // Query only items that match the current user's email
       final List<Map<String, dynamic>> results =
-          await collection.find().toList();
+          await collection.find({'userEmail': widget.userEmail}).toList();
+
       await db.close();
 
       List<InventoryItem> inventoryItems =
@@ -119,24 +122,41 @@ class _InventoryState extends State<Inventory> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Date: ${item.date}'),
+                          SizedBox(height: 10),
                           Text('Input ID: ${item.inputId}'),
+                          SizedBox(height: 10),
                           Text('Name: ${item.name}'),
+                          SizedBox(height: 10),
                           Text(
-                              'Account Name: ${item.accountNameBranchManning}'),
+                              'Account Name Branch Manning: ${item.accountNameBranchManning}'),
+                          SizedBox(height: 10),
                           Text('Period: ${item.period}'),
+                          SizedBox(height: 10),
                           Text('Month: ${item.month}'),
+                          SizedBox(height: 10),
                           Text('Week: ${item.week}'),
+                          SizedBox(height: 10),
                           Text('Category: ${item.category}'),
+                          SizedBox(height: 10),
                           Text('SKU Description: ${item.skuDescription}'),
+                          SizedBox(height: 10),
                           Text('Products: ${item.products}'),
+                          SizedBox(height: 10),
                           Text('SKU Code: ${item.skuCode}'),
+                          SizedBox(height: 10),
                           Text('Status: ${item.status}'),
+                          SizedBox(height: 10),
                           Text('Beginning: ${item.beginning}'),
+                          SizedBox(height: 10),
                           Text('Delivery: ${item.delivery}'),
+                          SizedBox(height: 10),
                           Text('Ending: ${item.ending}'),
+                          SizedBox(height: 10),
                           Text('Offtake: ${item.offtake}'),
+                          SizedBox(height: 10),
                           Text(
                               'Inventory Days Level: ${item.inventoryDaysLevel}'),
+                          SizedBox(height: 10),
                           Text('Number of Days OOS: ${item.noOfDaysOOS}'),
                         ],
                       ),
