@@ -52,6 +52,7 @@ class MongoDemo {
 
 class InventoryItem {
   ObjectId id;
+  String userEmail;
   String date;
   String inputId;
   String name;
@@ -73,6 +74,7 @@ class InventoryItem {
 
   InventoryItem({
     required this.id,
+    required this.userEmail,
     required this.date,
     required this.inputId,
     required this.name,
@@ -95,6 +97,7 @@ class InventoryItem {
 
   factory InventoryItem.fromJson(Map<String, dynamic> json) => InventoryItem(
         id: json['_id'] ?? ObjectId(),
+        userEmail: json['userEmail'] ?? '',
         date: json['date'] ?? '',
         inputId: json['inputId'] ?? '',
         name: json['name'] ?? '',
@@ -117,6 +120,7 @@ class InventoryItem {
 
   Map<String, dynamic> toJson() => {
         '_id': id,
+        'userEmail': userEmail,
         'date': date,
         'inputId': inputId,
         'name': name,
