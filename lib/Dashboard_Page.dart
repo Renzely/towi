@@ -5,6 +5,7 @@ import 'package:demo_app/Login_Page.dart';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
+import 'package:demo_app/return_to_vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -230,7 +231,13 @@ class RTV extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () {
-            // Add your notification handling code here
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => returnVendor(
+                userName: userName,
+                userLastName: userLastName,
+                userEmail: userEmail,
+              ),
+            ));
           },
         ),
       ],
