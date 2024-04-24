@@ -219,7 +219,7 @@ class RTV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideBarLayout(
-      title: "RTV",
+      title: "Return To Vendor",
       mainContent: Container(
         alignment: Alignment.center,
         child: Text('RTV History Screen'),
@@ -437,7 +437,7 @@ class _SideBarLayoutState extends State<SideBarLayout> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.assignment_return_outlined),
-                  title: const Text('RTV'),
+                  title: const Text('Return To Vendor'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
