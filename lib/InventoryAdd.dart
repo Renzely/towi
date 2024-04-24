@@ -76,8 +76,11 @@ class _AddInventoryState extends State<AddInventory> {
 
   String generateInputID() {
     var timestamp = DateTime.now().millisecondsSinceEpoch;
-    var random = Random().nextInt(9999);
-    return 'TOWI$timestamp$random';
+    var random =
+        Random().nextInt(10000); // Generate a random number between 0 and 9999
+    var paddedRandom =
+        random.toString().padLeft(4, '0'); // Ensure it has 4 digits
+    return '2000$paddedRandom';
   }
 
   @override
@@ -1006,7 +1009,7 @@ class _SKUInventoryState extends State<SKUInventory> {
       delivery: delivery,
       ending: ending,
       offtake: offtake,
-      inventoryDaysLevel: inventoryDaysLevel.toInt(),
+      inventoryDaysLevel: inventoryDaysLevel.toDouble(),
       noOfDaysOOS: numberOfDaysOOS,
     );
 
@@ -1491,6 +1494,9 @@ class _SKUInventoryState extends State<SKUInventory> {
       _deliveryController.clear();
       _endingController.clear();
       _offtakeController.clear();
+      if (status == 'Not Carried' || status == 'Delisted') {
+        _selectedNumberOfDaysOOS = 0;
+      }
     });
   }
 
@@ -1504,6 +1510,9 @@ class _SKUInventoryState extends State<SKUInventory> {
       _deliveryController.clear();
       _endingController.clear();
       _offtakeController.clear();
+      if (status == 'Not Carried' || status == 'Delisted') {
+        _selectedNumberOfDaysOOS = 0;
+      }
     });
   }
 

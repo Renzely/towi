@@ -69,7 +69,7 @@ class InventoryItem {
   int delivery;
   int ending;
   int offtake;
-  int inventoryDaysLevel;
+  final double inventoryDaysLevel;
   int noOfDaysOOS;
 
   InventoryItem({
@@ -114,7 +114,9 @@ class InventoryItem {
         delivery: json['delivery'] ?? 0,
         ending: json['ending'] ?? 0,
         offtake: json['offtake'] ?? 0,
-        inventoryDaysLevel: json['inventoryDaysLevel'] ?? 0,
+        inventoryDaysLevel: (json['inventoryDaysLevel'] != null)
+            ? double.parse(json['inventoryDaysLevel'].toStringAsFixed(2))
+            : 0.0, // Default value if null
         noOfDaysOOS: json['noOfDaysOOS'] ?? 0,
       );
 
