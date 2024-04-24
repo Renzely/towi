@@ -99,7 +99,7 @@ class _returnVendorState extends State<returnVendor> {
                   },
                   child: InputDecorator(
                     decoration: InputDecoration(
-                      labelText: 'Date',
+                      labelText: '',
                     ),
                     child: Text(
                       DateFormat('yyyy-MM-dd').format(selectedDate),

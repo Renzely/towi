@@ -123,7 +123,8 @@ class _AddInventoryState extends State<AddInventory> {
                   children: [
                     Text(
                       'Date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(height: 8),
                     Container(
@@ -154,7 +155,8 @@ class _AddInventoryState extends State<AddInventory> {
                     SizedBox(height: 16),
                     Text(
                       'Input ID',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(height: 8),
                     TextFormField(
@@ -167,7 +169,8 @@ class _AddInventoryState extends State<AddInventory> {
                     SizedBox(height: 16),
                     Text(
                       'Name',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(height: 8),
                     TextFormField(
@@ -178,7 +181,8 @@ class _AddInventoryState extends State<AddInventory> {
                     SizedBox(height: 16),
                     Text(
                       'Account Name Branch Manning',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(height: 10),
                     Container(
@@ -257,7 +261,8 @@ class _AddInventoryState extends State<AddInventory> {
                       SizedBox(height: 8),
                       Text(
                         'PERIOD',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       SizedBox(height: 8),
                       Container(
@@ -792,7 +797,8 @@ class _AddInventoryState extends State<AddInventory> {
                       if (_showAdditionalInfo) ...[
                         SizedBox(height: 16),
                         Text('Month',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                         SizedBox(height: 8),
                         TextFormField(
                           controller: _monthController,
@@ -803,7 +809,8 @@ class _AddInventoryState extends State<AddInventory> {
                         SizedBox(height: 8),
                         Text(
                           'Week',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         TextFormField(
                           controller: _weekController,
@@ -1576,7 +1583,7 @@ class _SKUInventoryState extends State<SKUInventory> {
               children: <Widget>[
                 Text(
                   'Week Number',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 TextField(
                   controller: _accountNameController,
@@ -1588,7 +1595,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                 // DEMO MONTH
                 Text(
                   'Month',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 TextField(
                   controller: _accountNameController,
@@ -1600,7 +1607,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                 SizedBox(height: 10),
                 Text(
                   'Account Branch Name',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 TextField(
                   controller: _accountNameController,
@@ -1624,7 +1631,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: Text('v1'),
+                      child: Text(
+                        'v1',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     OutlinedButton(
                       onPressed: () => _toggleDropdown('v2'),
@@ -1634,7 +1644,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: Text('v2'),
+                      child: Text(
+                        'v2',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     OutlinedButton(
                       onPressed: () => _toggleDropdown('v3'),
@@ -1644,7 +1657,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: Text('v3'),
+                      child: Text(
+                        'v3',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
@@ -1672,7 +1688,8 @@ class _SKUInventoryState extends State<SKUInventory> {
                         SizedBox(height: 10),
                         Text(
                           'Products',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         TextField(
                           enabled: false,
@@ -1685,7 +1702,8 @@ class _SKUInventoryState extends State<SKUInventory> {
                         SizedBox(height: 10),
                         Text(
                           'SKU Code',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         TextField(
                           enabled: false,
@@ -1712,7 +1730,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: Text('Carried'),
+                        child: Text(
+                          'Carried',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     if (_productDetails != null)
                       OutlinedButton(
@@ -1724,7 +1745,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: Text('Not Carried'),
+                        child: Text(
+                          'Not Carried',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     if (_productDetails != null)
                       OutlinedButton(
@@ -1736,7 +1760,10 @@ class _SKUInventoryState extends State<SKUInventory> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: Text('Delisted'),
+                        child: Text(
+                          'Delisted',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                   ],
                 ),
@@ -1753,7 +1780,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       labelText: 'Beginning',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -1766,7 +1793,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       labelText: 'Delivery',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -1779,7 +1806,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       labelText: 'Ending',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -1793,7 +1820,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       labelText: 'Offtake',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -1807,7 +1834,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                       labelText: 'Inventory days Level',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -1818,7 +1845,7 @@ class _SKUInventoryState extends State<SKUInventory> {
                         labelText: 'No. of Days OOS',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14, // Adjust size as needed
+                          fontSize: 16, // Adjust size as needed
                         ),
                       ),
                       value: _selectedNumberOfDaysOOS,
