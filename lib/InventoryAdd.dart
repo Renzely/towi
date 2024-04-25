@@ -995,6 +995,24 @@ class _SKUInventoryState extends State<SKUInventory> {
       }
     }
 
+    dynamic ncValue = 'NC'; // Set value for Not Carried
+    dynamic delistedValue = 'Delisted'; // Set value for Delisted
+
+    dynamic beginningValue = status == 'Not Carried' ? ncValue : beginning;
+    dynamic deliveryValue = status == 'Not Carried' ? ncValue : delivery;
+    dynamic endingValue = status == 'Not Carried' ? ncValue : ending;
+    dynamic offtakeValue = status == 'Not Carried' ? ncValue : offtake;
+    dynamic noOfDaysOOSValue =
+        status == 'Not Carried' ? ncValue : numberOfDaysOOS;
+
+// If status is Delisted, assign Delisted value to the relevant fields
+    if (status == 'Delisted') {
+      beginningValue = delistedValue;
+      deliveryValue = delistedValue;
+      endingValue = delistedValue;
+      offtakeValue = delistedValue;
+      noOfDaysOOSValue = delistedValue;
+    }
     // Create a new InventoryItem from form inputs
     InventoryItem newItem = InventoryItem(
       id: ObjectId(), // You might want to generate this based on your DB setup
@@ -1012,12 +1030,17 @@ class _SKUInventoryState extends State<SKUInventory> {
       products: product,
       skuCode: skucode,
       status: status,
-      beginning: beginning,
-      delivery: delivery,
-      ending: ending,
-      offtake: offtake,
+      // beginning: beginning,
+      // delivery: delivery,
+      // ending: ending,
+      // offtake: offtake,
+      beginning: beginningValue,
+      delivery: deliveryValue,
+      ending: endingValue,
+      offtake: offtakeValue,
       inventoryDaysLevel: inventoryDaysLevel.toDouble(),
-      noOfDaysOOS: numberOfDaysOOS,
+      //noOfDaysOOS: numberOfDaysOOS,
+      noOfDaysOOS: noOfDaysOOSValue,
     );
 
     // Save the new inventory item to the database
