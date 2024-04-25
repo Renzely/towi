@@ -166,3 +166,73 @@ class InventoryItem {
     await db.close();
   }
 }
+
+class ReturnToVendor {
+  ObjectId id;
+  String userEmail;
+  String date;
+  String merchandiserName;
+  String outlet;
+  String category;
+  String item;
+  String driverName;
+  String plateNumber;
+  String pullOutReason;
+
+  ReturnToVendor({
+    required this.id,
+    required this.userEmail,
+    required this.date,
+    required this.merchandiserName,
+    required this.outlet,
+    required this.category,
+    required this.item,
+    required this.driverName,
+    required this.plateNumber,
+    required this.pullOutReason,
+  });
+
+  factory ReturnToVendor.fromJson(Map<String, dynamic> json) => ReturnToVendor(
+        id: json['_id'] ?? ObjectId(),
+        userEmail: json['userEmail'] ?? '',
+        date: json['date'] ?? '',
+        merchandiserName: json['merchandiserName'] ?? '',
+        outlet: json['outlet'] ?? '',
+        category: json['category'] ?? '',
+        item: json['item'] ?? '',
+        driverName: json['driverName'] ?? '',
+        plateNumber: json['plateNumber'] ?? '',
+        pullOutReason: json['pullOutReason'] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        '_id': id,
+        'userEmail': userEmail,
+        'date': date,
+        'merchandiserName': merchandiserName,
+        'outlet': outlet,
+        'category': category,
+        'Item': item,
+        'driverName': driverName,
+        'plateNumber': plateNumber,
+        'pullOutReason': pullOutReason,
+      };
+
+  void saveToDatabase(ReturnToVendor newItem) async {
+    final db = Db(MONGO_CONN_URL);
+    await db.open();
+
+    final collection = db.collection(USER_RTV);
+
+    final Map<String, dynamic> itemMap = newItem.toJson();
+
+    try {
+      await collection.insert(itemMap);
+      print('Return to vendor saved to database');
+    } catch (e) {
+      print('Error saving return to vendor: $e');
+    }
+
+    await db.close();
+  }
+}

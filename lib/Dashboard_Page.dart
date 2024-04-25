@@ -205,7 +205,7 @@ class _InventoryState extends State<Inventory> {
   }
 }
 
-class RTV extends StatelessWidget {
+class RTV extends StatefulWidget {
   final String userName;
   final String userLastName;
   final String userEmail;
@@ -217,33 +217,139 @@ class RTV extends StatelessWidget {
   });
 
   @override
+  _RTVState createState() => _RTVState();
+}
+
+class _RTVState extends State<RTV> {
+  late Future<List<ReturnToVendor>> _futureRTV;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  void _fetchData() {
+    setState(() {
+      _futureRTV = _fetchRTVData();
+    });
+  }
+
+  Future<List<ReturnToVendor>> _fetchRTVData() async {
+    try {
+      final db = await mongo.Db.create(MONGO_CONN_URL);
+      await db.open();
+      final collection = db.collection(USER_RTV);
+
+      // Query only items that match the current user's email
+      final List<Map<String, dynamic>> results =
+          await collection.find({'userEmail': widget.userEmail}).toList();
+
+      await db.close();
+
+      List<ReturnToVendor> rtvItems =
+          results.map((data) => ReturnToVendor.fromJson(data)).toList();
+      return rtvItems;
+    } catch (e) {
+      print('Error fetching RTV data: $e');
+      throw e;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SideBarLayout(
       title: "Return To Vendor",
-      mainContent: Container(
-        alignment: Alignment.center,
-        child: Text('RTV History Screen'),
+      mainContent: RefreshIndicator(
+        onRefresh: () async {
+          // Manually refresh RTV data
+          _fetchData();
+        },
+        child: FutureBuilder<List<ReturnToVendor>>(
+          future: _futureRTV,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              List<ReturnToVendor> rtvItems = snapshot.data ?? [];
+              return ListView.builder(
+                itemCount: rtvItems.length,
+                itemBuilder: (context, index) {
+                  ReturnToVendor item = rtvItems[index];
+                  return ListTile(
+                    // title: Text(item.name),
+                    subtitle: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Date: ${item.date}'),
+                          SizedBox(height: 10),
+                          Text('Merchandiser: ${item.merchandiserName}'),
+                          SizedBox(height: 10),
+                          Text('Outlet: ${item.outlet}'),
+                          SizedBox(height: 10),
+                          Text('Category: ${item.category}'),
+                          SizedBox(height: 10),
+                          Text('Item: ${item.item}'),
+                          SizedBox(height: 10),
+                          Text('Driver\'s Name: ${item.driverName}'),
+                          SizedBox(height: 10),
+                          Text('Plate Number: ${item.plateNumber}'),
+                          SizedBox(height: 10),
+                          Text('Pull Out Reason: ${item.pullOutReason}'),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
       appBarActions: [
+        IconButton(
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            // Manually refresh RTV data
+            _fetchData();
+          },
+        ),
         IconButton(
           icon: Icon(
             Icons.assignment_return_rounded,
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => returnVendor(
-                userName: userName,
-                userLastName: userLastName,
-                userEmail: userEmail,
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ReturnVendor(
+                  userName: widget.userName,
+                  userLastName: widget.userLastName,
+                  userEmail: widget.userEmail,
+                ),
               ),
-            ));
+            );
           },
         ),
       ],
-      userName: userName,
-      userLastName: userLastName,
-      userEmail: userEmail,
+      userName: widget.userName,
+      userLastName: widget.userLastName,
+      userEmail: widget.userEmail,
     );
   }
 }

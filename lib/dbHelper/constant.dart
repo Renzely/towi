@@ -8,6 +8,8 @@ const USER_COLLECTION = "TowiDb";
 
 const USER_INVENTORY = "TowiInventory";
 
+const USER_RTV = 'TowiReturnToVendor';
+
 
 
 // user = "TowiAppUser"
