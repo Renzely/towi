@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'dart:developer';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
