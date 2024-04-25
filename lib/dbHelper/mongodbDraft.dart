@@ -65,12 +65,12 @@ class InventoryItem {
   String products;
   String skuCode;
   String status; // Carried, Not Carried, Delisted
-  int beginning;
-  int delivery;
-  int ending;
-  int offtake;
+  dynamic beginning;
+  dynamic delivery;
+  dynamic ending;
+  dynamic offtake;
   final double inventoryDaysLevel;
-  int noOfDaysOOS;
+  dynamic noOfDaysOOS;
 
   InventoryItem({
     required this.id,

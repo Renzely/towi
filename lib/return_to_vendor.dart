@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_import, depend_on_referenced_packages, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types
+// ignore_for_file: non_constant_identifier_names, unused_import, depend_on_referenced_packages, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, prefer_final_fields, library_private_types_in_public_api, prefer_const_constructors_in_immutables
 import 'dart:math';
 import 'package:demo_app/Dashboard_Page.dart';
 import 'package:demo_app/dbHelper/constant.dart';
