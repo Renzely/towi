@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
@@ -92,7 +92,7 @@ class _AddInventoryState extends State<AddInventory> {
           backgroundColor: Colors.green[600],
           elevation: 0,
           title: Text(
-            'Inventory Form',
+            'Inventory Input',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           leading: IconButton(
@@ -1649,7 +1649,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                     OutlinedButton(
                       onPressed: () => _toggleDropdown('v1'),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: Colors.green),
+                        side: BorderSide(
+                            width: 2.0,
+                            color: _versionSelected == 'v1'
+                                ? Colors.green
+                                : Colors.blueGrey.shade200),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -1662,7 +1666,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                     OutlinedButton(
                       onPressed: () => _toggleDropdown('v2'),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: Colors.green),
+                        side: BorderSide(
+                            width: 2.0,
+                            color: _versionSelected == 'v2'
+                                ? Colors.green
+                                : Colors.blueGrey.shade200),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -1675,7 +1683,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                     OutlinedButton(
                       onPressed: () => _toggleDropdown('v3'),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: Colors.green),
+                        side: BorderSide(
+                            width: 2.0,
+                            color: _versionSelected == 'v3'
+                                ? Colors.green
+                                : Colors.blueGrey.shade200),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -1748,7 +1760,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                         onPressed: () => _toggleCarriedTextField(
                             'Carried'), // Pass 'Carried' as the status
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(width: 2.0, color: Colors.green),
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _statusSelected == 'Carried'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -1763,7 +1779,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                         onPressed: () => _toggleNotCarriedTextField(
                             'Not Carried'), // Pass 'Not Carried' as the status
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(width: 2.0, color: Colors.green),
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _statusSelected == 'Not Carried'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -1778,7 +1798,11 @@ class _SKUInventoryState extends State<SKUInventory> {
                         onPressed: () => _toggleDelistedTextField(
                             'Delisted'), // Pass 'Delisted' as the status
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(width: 2.0, color: Colors.green),
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _statusSelected == 'Delisted'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),

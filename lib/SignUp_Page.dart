@@ -177,7 +177,7 @@ class _SignUpState extends State<SignUp> {
                     child: const Text(
                       'SIGN UP',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -236,6 +236,7 @@ class _SignUpState extends State<SignUp> {
       SnackBar(content: Text("Inserted ID " + _id.$oid)),
     );
     _clearAll();
+    Navigator.pop(context);
   }
 
   void _clearAll() {

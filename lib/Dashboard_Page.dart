@@ -87,120 +87,203 @@ class _InventoryState extends State<Inventory> {
 
   @override
   Widget build(BuildContext context) {
-    return SideBarLayout(
-      title: "Inventory",
-      mainContent: RefreshIndicator(
-        onRefresh: () async {
-          // Manually refresh inventory data
-          _fetchData();
-        },
-        child: FutureBuilder<List<InventoryItem>>(
-          future: _futureInventory,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              List<InventoryItem> inventoryItems = snapshot.data ?? [];
-              return ListView.builder(
-                itemCount: inventoryItems.length,
-                itemBuilder: (context, index) {
-                  InventoryItem item = inventoryItems[index];
-                  return ListTile(
-                    // title: Text(item.name),
-                    subtitle: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date: ${item.date}'),
-                          SizedBox(height: 10),
-                          Text('Input ID: ${item.inputId}'),
-                          SizedBox(height: 10),
-                          Text('Name: ${item.name}'),
-                          SizedBox(height: 10),
-                          Text(
-                              'Account Name Branch Manning: ${item.accountNameBranchManning}'),
-                          SizedBox(height: 10),
-                          Text('Period: ${item.period}'),
-                          SizedBox(height: 10),
-                          Text('Month: ${item.month}'),
-                          SizedBox(height: 10),
-                          Text('Week: ${item.week}'),
-                          SizedBox(height: 10),
-                          Text('Category: ${item.category}'),
-                          SizedBox(height: 10),
-                          Text('SKU Description: ${item.skuDescription}'),
-                          SizedBox(height: 10),
-                          Text('Products: ${item.products}'),
-                          SizedBox(height: 10),
-                          Text('SKU Code: ${item.skuCode}'),
-                          SizedBox(height: 10),
-                          Text('Status: ${item.status}'),
-                          SizedBox(height: 10),
-                          Text('Beginning: ${item.beginning}'),
-                          SizedBox(height: 10),
-                          Text('Delivery: ${item.delivery}'),
-                          SizedBox(height: 10),
-                          Text('Ending: ${item.ending}'),
-                          SizedBox(height: 10),
-                          Text('Offtake: ${item.offtake}'),
-                          SizedBox(height: 10),
-                          Text(
-                              'Inventory Days Level: ${item.inventoryDaysLevel}'),
-                          SizedBox(height: 10),
-                          Text('Number of Days OOS: ${item.noOfDaysOOS}'),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        ),
-      ),
-      appBarActions: [
-        IconButton(
-          icon: Icon(
-            Icons.refresh,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            // Manually refresh inventory data
+    return Scaffold(
+      body: SideBarLayout(
+        title: "Inventory",
+        mainContent: RefreshIndicator(
+          onRefresh: () async {
             _fetchData();
           },
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.assignment_add,
-            color: Colors.white,
+          child: FutureBuilder<List<InventoryItem>>(
+            future: _futureInventory,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.green, // This sets the color of the spinner
+                  backgroundColor: Colors.transparent,
+                ));
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                List<InventoryItem> inventoryItems = snapshot.data ?? [];
+                return ListView.builder(
+                  itemCount: inventoryItems.length,
+                  itemBuilder: (context, index) {
+                    InventoryItem item =
+                        inventoryItems.reversed.toList()[index];
+                    return ListTile(
+                      title: Text(
+                        item.week,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      subtitle: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.date}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Input ID: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.inputId}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Name: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.name}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Account Name Branch Manning: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.accountNameBranchManning}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Period: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.period}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Month: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.month}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Week: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.week}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Category: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.category}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'SKU Description: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.skuDescription}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Products: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.products}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'SKU Code: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.skuCode}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Status: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.status}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Beginning: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.beginning}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Delivery: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.delivery}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Ending: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.ending}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Offtake: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.offtake}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Inventory Days Level: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.inventoryDaysLevel}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Number of Days OOS: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.noOfDaysOOS}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddInventory(
-                  userName: widget.userName,
-                  userLastName: widget.userLastName,
-                  userEmail: widget.userEmail,
-                ),
-              ),
-            );
-          },
         ),
-      ],
-      userName: widget.userName,
-      userLastName: widget.userLastName,
-      userEmail: widget.userEmail,
+        appBarActions: [
+          IconButton(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // Manually refresh inventory data
+              _fetchData();
+            },
+          ),
+        ],
+        userName: widget.userName,
+        userLastName: widget.userLastName,
+        userEmail: widget.userEmail,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddInventory(
+                userName: widget.userName,
+                userLastName: widget.userLastName,
+                userEmail: widget.userEmail,
+              ),
+            ),
+          );
+        },
+        child: Icon(
+          Icons.assignment_add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.green, // Customize the background color
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -258,98 +341,136 @@ class _RTVState extends State<RTV> {
 
   @override
   Widget build(BuildContext context) {
-    return SideBarLayout(
-      title: "Return To Vendor",
-      mainContent: RefreshIndicator(
-        onRefresh: () async {
-          // Manually refresh RTV data
-          _fetchData();
-        },
-        child: FutureBuilder<List<ReturnToVendor>>(
-          future: _futureRTV,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              List<ReturnToVendor> rtvItems = snapshot.data ?? [];
-              return ListView.builder(
-                itemCount: rtvItems.length,
-                itemBuilder: (context, index) {
-                  ReturnToVendor item = rtvItems[index];
-                  return ListTile(
-                    // title: Text(item.name),
-                    subtitle: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date: ${item.date}'),
-                          SizedBox(height: 10),
-                          Text('Merchandiser: ${item.merchandiserName}'),
-                          SizedBox(height: 10),
-                          Text('Outlet: ${item.outlet}'),
-                          SizedBox(height: 10),
-                          Text('Category: ${item.category}'),
-                          SizedBox(height: 10),
-                          Text('Item: ${item.item}'),
-                          SizedBox(height: 10),
-                          Text('Driver\'s Name: ${item.driverName}'),
-                          SizedBox(height: 10),
-                          Text('Plate Number: ${item.plateNumber}'),
-                          SizedBox(height: 10),
-                          Text('Pull Out Reason: ${item.pullOutReason}'),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        ),
-      ),
-      appBarActions: [
-        IconButton(
-          icon: Icon(
-            Icons.refresh,
-            color: Colors.white,
-          ),
-          onPressed: () {
+    return Scaffold(
+      body: SideBarLayout(
+        title: "Return To Vendor",
+        mainContent: RefreshIndicator(
+          onRefresh: () async {
             // Manually refresh RTV data
             _fetchData();
           },
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.assignment_return_rounded,
-            color: Colors.white,
+          child: FutureBuilder<List<ReturnToVendor>>(
+            future: _futureRTV,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.green, // This sets the color of the spinner
+                  backgroundColor: Colors.transparent,
+                ));
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                List<ReturnToVendor> rtvItems = snapshot.data ?? [];
+                return ListView.builder(
+                  itemCount: rtvItems.length,
+                  itemBuilder: (context, index) {
+                    ReturnToVendor item = rtvItems[index];
+                    return ListTile(
+                      subtitle: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.date}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Merchandiser: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.merchandiserName}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Outlet: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.outlet}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Category: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.category}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Item: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.item}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Driver\'s Name: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.driverName}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Plate Number: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.plateNumber}'),
+                            SizedBox(height: 10),
+                            Text(
+                              'Pull Out Reason: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.pullOutReason}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ReturnVendor(
-                  userName: widget.userName,
-                  userLastName: widget.userLastName,
-                  userEmail: widget.userEmail,
-                ),
-              ),
-            );
-          },
         ),
-      ],
-      userName: widget.userName,
-      userLastName: widget.userLastName,
-      userEmail: widget.userEmail,
+        appBarActions: [
+          IconButton(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // Manually refresh RTV data
+              _fetchData();
+            },
+          ),
+        ],
+        userName: widget.userName,
+        userLastName: widget.userLastName,
+        userEmail: widget.userEmail,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ReturnVendor(
+              userName: widget.userName,
+              userLastName: widget.userLastName,
+              userEmail: widget.userEmail,
+            ),
+          ));
+        },
+        child: Icon(
+          Icons.assignment_add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.green,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
