@@ -161,7 +161,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
           backgroundColor: Colors.green[600],
           elevation: 0,
           title: Text(
-            'Return to Vendor',
+            'Return to Vendor Input',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           leading: IconButton(
@@ -265,14 +265,17 @@ class _ReturnVendorState extends State<ReturnVendor> {
                           width: 2.0,
                           color: selectedCategory == category
                               ? Colors.green
-                              : Colors
-                                  .transparent, // Highlight selected category
+                              : Colors.blueGrey
+                                  .shade200, // Highlight selected category
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: Text(category),
+                      child: Text(
+                        category,
+                        style: TextStyle(color: Colors.black),
+                      ),
                     );
                   }).toList(),
                 ),
