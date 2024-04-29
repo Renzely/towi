@@ -175,6 +175,7 @@ class ReturnToVendor {
   String outlet;
   String category;
   String item;
+  String quantity;
   String driverName;
   String plateNumber;
   String pullOutReason;
@@ -187,6 +188,7 @@ class ReturnToVendor {
     required this.outlet,
     required this.category,
     required this.item,
+    required this.quantity,
     required this.driverName,
     required this.plateNumber,
     required this.pullOutReason,
@@ -200,6 +202,7 @@ class ReturnToVendor {
         outlet: json['outlet'] ?? '',
         category: json['category'] ?? '',
         item: json['item'] ?? '',
+        quantity: json['quantity'] ?? '',
         driverName: json['driverName'] ?? '',
         plateNumber: json['plateNumber'] ?? '',
         pullOutReason: json['pullOutReason'] ?? '',
@@ -213,6 +216,7 @@ class ReturnToVendor {
         'outlet': outlet,
         'category': category,
         'Item': item,
+        'quantity': quantity,
         'driverName': driverName,
         'plateNumber': plateNumber,
         'pullOutReason': pullOutReason,

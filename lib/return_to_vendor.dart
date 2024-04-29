@@ -25,6 +25,7 @@ class ReturnVendor extends StatefulWidget {
 class _ReturnVendorState extends State<ReturnVendor> {
   late String selectedOutlet = ''; // Initialize with an empty string
   late String selectedItem = ''; // Initialize with an empty string
+  late String quantity = '';
   late DateTime selectedDate = DateTime.now(); // Initialize with current date
   String merchandiserName = '';
   String driverName = '';
@@ -314,6 +315,21 @@ class _ReturnVendorState extends State<ReturnVendor> {
                 ),
                 SizedBox(height: 16),
                 Text(
+                  'Quanity',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Input Quantity',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      quantity = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 16),
+                Text(
                   'Driver\'s Name',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -452,6 +468,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
         'outlet': selectedOutlet,
         'category': selectedCategory,
         'item': selectedItem,
+        'quantity': quantity,
         'driverName': driverName.toString(),
         'plateNumber': plateNumber.toString(),
         'pullOutReason': pullOutReason.toString(),
