@@ -412,6 +412,12 @@ class _RTVState extends State<RTV> {
                             Text('${item.item}'),
                             SizedBox(height: 10),
                             Text(
+                              'Quantity: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('${item.quantity}'),
+                            SizedBox(height: 10),
+                            Text(
                               'Driver\'s Name: ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
