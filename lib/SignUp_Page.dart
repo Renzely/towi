@@ -218,10 +218,15 @@ class _SignUpState extends State<SignUp> {
     String lName,
     String emailAdd,
     String userN,
-    String pass,
+    String pass, // Plain text password
     String contact_num,
   ) async {
     var _id = M.ObjectId();
+    final plainPassword = pass; // Store the plain text password for hashing
+
+    // Hash the password using the hashPassword function
+    final hashedPassword = await hashPassword(plainPassword);
+
     final data = MongoDemo(
       id: _id,
       firstName: fName,
@@ -229,7 +234,7 @@ class _SignUpState extends State<SignUp> {
       emailAddress: emailAdd,
       contactNum: contact_num,
       username: userN,
-      password: pass,
+      password: hashedPassword, // Store the hashed password
     );
     var result = await MongoDatabase.insert(data);
     ScaffoldMessenger.of(context).showSnackBar(
