@@ -1615,7 +1615,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                     hintText: widget.selectedWeek,
                   ),
                 ),
-                // DEMO MONTH
                 Text(
                   'Month',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

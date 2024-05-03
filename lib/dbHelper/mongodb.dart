@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'dart:developer';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
@@ -58,17 +56,17 @@ class MongoDatabase {
     }
   }
 
-  // static Future<Map<String, dynamic>?> getUserDetailsById(String userId) async {
-  //   try {
-  //     await connect(); // Ensure connection is established
-  //     final user =
-  //         await userCollection.findOne({'_id': ObjectId.parse(userId)});
-  //     return user;
-  //   } catch (e) {
-  //     print('Error fetching user details: $e');
-  //     return null;
-  //   }
-  // }
+  static Future<Map<String, dynamic>?> getUserDetailsById(String userId) async {
+    try {
+      await connect(); // Ensure connection is established
+      final user =
+          await userCollection.findOne({'_id': ObjectId.parse(userId)});
+      return user;
+    } catch (e) {
+      print('Error fetching user details: $e');
+      return null;
+    }
+  }
 
   static Future<Map<String, dynamic>?> getUserDetailsByUsername(
       String username) async {
