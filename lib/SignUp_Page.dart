@@ -263,4 +263,9 @@ class _SignUpState extends State<SignUp> {
         passwordController.text.isNotEmpty &&
         confirmPassController.text.isNotEmpty;
   }
+
+  bool _isValidContactNumber(String contactNumber) {
+    // Check if the contact number consists only of numbers and has a length up to 11 digits
+    return int.tryParse(contactNumber) != null && contactNumber.length <= 11;
+  }
 }
