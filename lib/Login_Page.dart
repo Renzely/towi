@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:demo_app/Dashboard_Page.dart';
 import 'package:demo_app/SignUp_Page.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
@@ -17,18 +18,13 @@ class LoginPage extends StatelessWidget {
       final userDetails =
           await MongoDatabase.getUserDetailsByUsername(username);
       if (userDetails != null) {
-        final String storedPasswordHash = userDetails[
-            'password']; // Assuming password is stored as a hash in the database
+        final String storedPasswordHash = userDetails['password'];
 
-        // Validate the password
-        if (validatePassword(password, storedPasswordHash)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Login Successfully'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-
+        // Validate the password using the validatePassword function
+        if (await validatePassword(password, storedPasswordHash)) {
+          // Passwords match, proceed with login
+          print("Login successful");
+          // Navigate to Dashboard or perform any other actions after successful login
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => SideBarLayout(
@@ -99,12 +95,16 @@ class LoginPage extends StatelessWidget {
     }
   }
 
-  bool validatePassword(String providedPassword, String storedPasswordHash) {
-    // Implement your password validation logic here
-    // Compare the provided password hash with the stored password hash
-    // Typically, you would use a secure hashing algorithm like bcrypt
-    // For demonstration purposes, this function simply compares the strings
-    return providedPassword == storedPasswordHash;
+  Future<bool> validatePassword(
+      String providedPassword, String storedPasswordHash) async {
+    try {
+      // Compare the provided password with the hashed password stored in the database
+      return await BCrypt.checkpw(providedPassword, storedPasswordHash);
+    } catch (e) {
+      // Handle error
+      print("Error validating password: $e");
+      return false;
+    }
   }
 
   @override

@@ -14,7 +14,7 @@ class MongoDemo {
   final String emailAddress;
   final String contactNum;
   final String username;
-  late final String password;
+  final String password;
 
   MongoDemo({
     required this.id,
@@ -47,31 +47,17 @@ class MongoDemo {
         'username': username,
         'password': password,
       };
-  Future<void> setPassword(String plainPassword) async {
-    final hashedPassword = await hashPassword(plainPassword);
-    password = hashedPassword;
-  }
-
-  Future<bool> verifyPassword(String plainPassword, String password) async {
-    return await verifyPassword(plainPassword, this.password);
-  }
 }
 
 Future<String> hashPassword(String password) async {
   // Generate a random salt for each password
   final rounds =
-      12; // Adjust the number of rounds based on security requirements
+      8; // Adjust the number of rounds based on security requirements
   final salt = await BCrypt.gensalt(logRounds: rounds);
 
   // Hash the password with the generated salt
   final hashedPassword = await BCrypt.hashpw(password, salt);
   return hashedPassword;
-}
-
-Future<bool> verifyPassword(String plainPassword, String hashedPassword) async {
-  // Compare the plain password with the hashed password
-  final isValid = await BCrypt.checkpw(plainPassword, hashedPassword);
-  return isValid;
 }
 
 // // // INVENTORY DATABASE // // //
