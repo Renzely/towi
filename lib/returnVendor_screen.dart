@@ -1,6 +1,6 @@
-// ignore_for_file: non_constant_identifier_names, unused_import, depend_on_referenced_packages, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, prefer_final_fields, library_private_types_in_public_api, prefer_const_constructors_in_immutables
+// ignore_for_file: non_constant_identifier_names, unused_import, depend_on_referenced_packages, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, prefer_final_fields, library_private_types_in_public_api, prefer_const_constructors_in_immutables, avoid_print, use_build_context_synchronously
 import 'dart:math';
-import 'package:demo_app/Dashboard_Page.dart';
+import 'package:demo_app/dashboard_screen.dart';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
