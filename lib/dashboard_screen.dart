@@ -1,11 +1,11 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api
+// ignore_for_file: must_be_immutable, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, unnecessary_string_interpolations, sort_child_properties_last, avoid_print, use_rethrow_when_possible, depend_on_referenced_packages
 
-import 'package:demo_app/InventoryAdd.dart';
-import 'package:demo_app/Login_Page.dart';
+import 'package:demo_app/inventoryAdd_screen.dart';
+import 'package:demo_app/login_screen.dart';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
-import 'package:demo_app/return_to_vendor.dart';
+import 'package:demo_app/returnVendor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';

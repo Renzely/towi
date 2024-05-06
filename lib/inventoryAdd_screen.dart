@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously, unused_element
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
 import 'package:flutter/services.dart';
-import 'package:demo_app/Dashboard_Page.dart';
+import 'package:demo_app/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:bson/bson.dart';
@@ -995,6 +995,7 @@ class _SKUInventoryState extends State<SKUInventory> {
       }
     }
 
+    //CATEGORY
     dynamic ncValue = 'NC'; // Set value for Not Carried
     dynamic delistedValue = 'Delisted'; // Set value for Delisted
 
@@ -1030,16 +1031,11 @@ class _SKUInventoryState extends State<SKUInventory> {
       products: product,
       skuCode: skucode,
       status: status,
-      // beginning: beginning,
-      // delivery: delivery,
-      // ending: ending,
-      // offtake: offtake,
       beginning: beginningValue,
       delivery: deliveryValue,
       ending: endingValue,
       offtake: offtakeValue,
       inventoryDaysLevel: inventoryDaysLevel.toDouble(),
-      //noOfDaysOOS: numberOfDaysOOS,
       noOfDaysOOS: noOfDaysOOSValue,
     );
 
@@ -1813,7 +1809,6 @@ class _SKUInventoryState extends State<SKUInventory> {
                       ),
                   ],
                 ),
-
                 if (_showCarriedTextField)
                   TextField(
                     controller: _beginningController,

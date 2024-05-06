@@ -1,8 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, unnecessary_null_comparison, use_key_in_widget_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, unnecessary_null_comparison, use_key_in_widget_constructors, avoid_print, await_only_futures, file_names
 
 import 'package:flutter/material.dart';
-import 'package:demo_app/Dashboard_Page.dart';
-import 'package:demo_app/SignUp_Page.dart';
+import 'package:demo_app/dashboard_screen.dart';
+import 'package:demo_app/signUp_screen.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:bcrypt/bcrypt.dart';
 
