@@ -2,18 +2,48 @@
 
 import 'package:flutter/material.dart';
 import 'package:demo_app/login_screen.dart'; // Import your LoginPage
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:demo_app/dashboard_screen.dart';
 // Import MongoDatabase
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //final mongoDatabase = MongoDatabase(MONGO_CONN_URL);
-  runApp(MyApp());
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final userName = prefs.getString('userName') ?? '';
+  final userLastName = prefs.getString('userLastName') ?? '';
+  final userEmail = prefs.getString('userEmail') ?? '';
+
+  runApp(MyApp(
+    isLoggedIn: isLoggedIn,
+    userName: userName,
+    userLastName: userLastName,
+    userEmail: userEmail,
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
+  final String userName;
+  final String userLastName;
+  final String userEmail;
+
+  MyApp({
+    required this.isLoggedIn,
+    required this.userName,
+    required this.userLastName,
+    required this.userEmail,
+  });
+
   @override
   Widget build(BuildContext context) => MaterialApp(
-        home: LoginPage(), // Set LoginPage as the initial route
+        home: isLoggedIn
+            ? Dashboard(
+                userName: userName,
+                userLastName: userLastName,
+                userEmail: userEmail,
+              )
+            : LoginPage(),
         debugShowCheckedModeBanner: false,
       );
 }

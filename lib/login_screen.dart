@@ -5,6 +5,7 @@ import 'package:demo_app/dashboard_screen.dart';
 import 'package:demo_app/signUp_screen.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:bcrypt/bcrypt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
@@ -24,6 +25,12 @@ class LoginPage extends StatelessWidget {
         if (await validatePassword(password, storedPasswordHash)) {
           // Passwords match, proceed with login
           print("Login successful");
+          // Save login state and user details
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setBool('isLoggedIn', true);
+          prefs.setString('userName', userDetails['firstName'] ?? '');
+          prefs.setString('userLastName', userDetails['lastName'] ?? '');
+          prefs.setString('userEmail', userDetails['email_Address'] ?? '');
           // Navigate to Dashboard or perform any other actions after successful login
           Navigator.of(context).push(
             MaterialPageRoute(
