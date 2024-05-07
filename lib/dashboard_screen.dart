@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatelessWidget {
   final String userName;
@@ -502,9 +503,7 @@ class Setting extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
+                _logout(context);
               },
               child: Text(
                 'LOG OUT',
@@ -521,6 +520,20 @@ class Setting extends StatelessWidget {
       userLastName: userLastName,
       userEmail: userEmail,
     );
+  }
+}
+
+Future<void> _logout(BuildContext context) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    // Navigate back to the login screen after logout
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  } catch (e) {
+    print('Error logging out: $e');
+    // Handle error
   }
 }
 
