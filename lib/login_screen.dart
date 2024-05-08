@@ -6,10 +6,18 @@ import 'package:demo_app/signUp_screen.dart';
 import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  String usernameErrorText = '';
+  String passwordErrorText = '';
 
   Future<void> _login(BuildContext context) async {
     final String username = usernameController.text;
@@ -44,42 +52,14 @@ class LoginPage extends StatelessWidget {
             ),
           );
         } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Login Failed"),
-                content: Text("Invalid password"),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("OK"),
-                  ),
-                ],
-              );
-            },
-          );
+          setState(() {
+            passwordErrorText = 'Invalid password';
+          });
         }
       } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Login Failed"),
-              content: Text("Invalid username"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
+        setState(() {
+          usernameErrorText = 'Invalid username';
+        });
       }
     } catch (e) {
       showDialog(
@@ -140,12 +120,14 @@ class LoginPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Login",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
+                    style:
+                        GoogleFonts.roboto(color: Colors.white, fontSize: 40),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Welcome to Towi",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    "Welcome to TOWI",
+                    style:
+                        GoogleFonts.roboto(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
@@ -188,26 +170,24 @@ class LoginPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Username',
-                                  style: TextStyle(
+                                  style: GoogleFonts.roboto(
                                     color: Colors.green[900],
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey[200]!,
-                                      ),
-                                    ),
-                                  ),
-                                  child: TextField(
-                                    controller:
-                                        usernameController, // Add controller
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter your username',
-                                      border: InputBorder.none,
-                                    ),
+                                TextFormField(
+                                  controller: usernameController,
+                                  onChanged: (_) {
+                                    setState(() {
+                                      usernameErrorText = '';
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your username',
+                                    border: InputBorder.none,
+                                    errorText: usernameErrorText.isNotEmpty
+                                        ? usernameErrorText
+                                        : null,
                                   ),
                                 ),
                               ],
@@ -219,27 +199,25 @@ class LoginPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Password',
-                                  style: TextStyle(
+                                  style: GoogleFonts.roboto(
                                     color: Colors.green[900],
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey[200]!,
-                                      ),
-                                    ),
-                                  ),
-                                  child: TextField(
-                                    controller:
-                                        passwordController, // Add controller
-                                    obscureText: true, // To hide password
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter your password',
-                                      border: InputBorder.none,
-                                    ),
+                                TextFormField(
+                                  controller: passwordController,
+                                  onChanged: (_) {
+                                    setState(() {
+                                      passwordErrorText = '';
+                                    });
+                                  },
+                                  obscureText: true, // To hide password
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your password',
+                                    border: InputBorder.none,
+                                    errorText: passwordErrorText.isNotEmpty
+                                        ? passwordErrorText
+                                        : null,
                                   ),
                                 ),
                               ],
@@ -264,7 +242,7 @@ class LoginPage extends StatelessWidget {
                           child: Center(
                             child: Text(
                               "Login",
-                              style: TextStyle(
+                              style: GoogleFonts.roboto(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -286,8 +264,8 @@ class LoginPage extends StatelessWidget {
                           );
                         },
                         child: Text(
-                          'Sign up',
-                          style: TextStyle(
+                          'SIGN UP',
+                          style: GoogleFonts.roboto(
                             color: Colors.blueAccent[200],
                             fontWeight: FontWeight.bold,
                           ),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:demo_app/login_screen.dart'; // Import your LoginPage
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:demo_app/dashboard_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 // Import MongoDatabase
 
 void main() async {
@@ -37,6 +39,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
         home: isLoggedIn
             ? Dashboard(
                 userName: userName,
