@@ -9,6 +9,7 @@ String welcomeToJson(MongoDemo data) => json.encode(data.toJson());
 
 class MongoDemo {
   final ObjectId id;
+  final String remarks;
   final String firstName;
   final String lastName;
   final String emailAddress;
@@ -17,6 +18,7 @@ class MongoDemo {
   final String password;
 
   MongoDemo({
+    required this.remarks,
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -29,6 +31,7 @@ class MongoDemo {
   factory MongoDemo.fromJson(Map<String, dynamic> json) {
     return MongoDemo(
       id: json['_id'],
+      remarks: json['remarks'],
       firstName: json['firstName'],
       lastName: json['lastName'],
       emailAddress: json['email_Address'],
@@ -40,6 +43,7 @@ class MongoDemo {
 
   Map<String, dynamic> toJson() => {
         '_id': id,
+        'remarks': remarks,
         'firstName': firstName,
         'lastName': lastName,
         'email_Address': emailAddress,
