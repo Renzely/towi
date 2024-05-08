@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Dashboard extends StatelessWidget {
   final String userName;
@@ -147,7 +146,7 @@ class _InventoryState extends State<Inventory> {
                             Text('${item.inputId}'),
                             SizedBox(height: 10),
                             Text(
-                              'Name: ',
+                              'Merchandiser: ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text('${item.name}'),

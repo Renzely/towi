@@ -168,7 +168,7 @@ class _AddInventoryState extends State<AddInventory> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'Name',
+                      'Merchandiser',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
