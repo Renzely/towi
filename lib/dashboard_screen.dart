@@ -123,7 +123,7 @@ class _InventoryState extends State<Inventory> {
                       ),
                       subtitle: Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color: Colors.grey.shade200,
                           border: Border.all(
                             color: Colors.black,
                             width: 1.0,
@@ -500,16 +500,28 @@ class Setting extends StatelessWidget {
       mainContent: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: 700, // Add space between the button and surrounding content
+          ),
           Center(
-            child: ElevatedButton(
-              onPressed: () {
-                _logout(context);
-              },
-              child: Text(
-                'LOG OUT',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+            child: SizedBox(
+              width: 350, // Set width to match the screen width
+              child: ElevatedButton(
+                onPressed: () {
+                  _logout(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[900], // Set button color here
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                child: Text(
+                  'LOG OUT',
+                  style: TextStyle(
+                    color: Colors.white, // Set text color here
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
