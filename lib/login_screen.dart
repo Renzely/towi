@@ -231,17 +231,19 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 40,
                       ),
-                      GestureDetector(
-                        onTap: () {
+                      ElevatedButton(
+                        onPressed: () {
                           _login(context); // Call the login method
                         },
-                        child: Container(
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 50),
-                          decoration: BoxDecoration(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[900],
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
-                            color: Colors.green[900],
                           ),
+                        ),
+                        child: SizedBox(
+                          width: 200, // Set a fixed width for the button
+                          height: 50,
                           child: Center(
                             child: Text(
                               "Login",

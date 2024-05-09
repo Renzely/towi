@@ -32,6 +32,8 @@ class _SignUpState extends State<SignUp> {
   String? usernameError;
   String? passwordError;
   String? confirmPassError;
+  bool obsurePassword = true;
+  bool obsureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class _SignUpState extends State<SignUp> {
         // Wrap the Column with SingleChildScrollView
         child: Center(
           child: Container(
-            height: 1050,
+            height: 1060,
             width: 500,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -181,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 20), // Add space between fields
                 TextField(
-                  obscureText: true,
+                  obscureText: obsurePassword,
                   controller: passwordController,
                   decoration: InputDecoration(
                     hintText: 'Password',
@@ -191,11 +193,23 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     errorText: passwordError,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obsurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obsurePassword = !obsurePassword;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20), // Add space between fields
                 TextField(
-                  obscureText: true,
+                  obscureText: obsureConfirmPassword,
                   controller: confirmPassController,
                   decoration: InputDecoration(
                     hintText: 'Confirm Password',
@@ -205,6 +219,18 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     errorText: confirmPassError,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obsureConfirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obsureConfirmPassword = !obsureConfirmPassword;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 35), // Add space between fields
@@ -352,6 +378,12 @@ class _SignUpState extends State<SignUp> {
     if (contactNumController.text.isEmpty) {
       setState(() {
         contactNumError = "Please enter Contact Number";
+      });
+      isValid = false;
+    } else if (contactNumController.text.length < 11) {
+      // Check if contact number is at least 11 digits long
+      setState(() {
+        contactNumError = "Contact Number must be at least 11 digits long";
       });
       isValid = false;
     } else {
