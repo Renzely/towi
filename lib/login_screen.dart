@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, unnecessary_null_comparison, use_key_in_widget_constructors, avoid_print, await_only_futures, file_names
 
+import 'package:demo_app/forgotPass_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/dashboard_screen.dart';
 import 'package:demo_app/signUp_screen.dart';
@@ -39,8 +40,9 @@ class _LoginPageState extends State<LoginPage> {
           prefs.setString('userName', userDetails['firstName'] ?? '');
           prefs.setString('userLastName', userDetails['lastName'] ?? '');
           prefs.setString('userEmail', userDetails['email_Address'] ?? '');
-          // Navigate to Dashboard or perform any other actions after successful login
-          Navigator.of(context).push(
+
+          // Use pushReplacement to navigate to Dashboard or perform any other actions after successful login
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => SideBarLayout(
                 title: "Dashboard",
@@ -50,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                 userEmail: userDetails['email_Address'] ?? '',
               ),
             ),
+            (route) => false, // This removes all routes from the stack
           );
         } else {
           setState(() {
@@ -265,6 +268,27 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Text(
                           'SIGN UP',
+                          style: GoogleFonts.roboto(
+                            color: Colors.blueAccent[200],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to forgot password page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPassword(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Forgot Password?',
                           style: GoogleFonts.roboto(
                             color: Colors.blueAccent[200],
                             fontWeight: FontWeight.bold,

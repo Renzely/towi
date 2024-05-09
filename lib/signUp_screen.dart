@@ -37,7 +37,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     List<String> remarksChoices = ['REGULAR', 'RELIVER', 'PROVISIONARY', 'FIX'];
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         // Wrap the Column with SingleChildScrollView
         child: Center(
