@@ -279,24 +279,24 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigate to forgot password page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPassword(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: GoogleFonts.roboto(
-                            color: Colors.blueAccent[200],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     // Navigate to forgot password page
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => ForgotPassword(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: Text(
+                      //     'Forgot Password?',
+                      //     style: GoogleFonts.roboto(
+                      //       color: Colors.blueAccent[200],
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

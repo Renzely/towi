@@ -135,111 +135,198 @@ class _InventoryState extends State<Inventory> {
                           children: [
                             Text(
                               'Date: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.date}'),
+                            Text(
+                              '${item.date}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Input ID: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.inputId}'),
+                            Text(
+                              '${item.inputId}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Merchandiser: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.name}'),
+                            Text(
+                              '${item.name}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Account Name Branch Manning: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.accountNameBranchManning}'),
+                            Text(
+                              '${item.accountNameBranchManning}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Period: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.period}'),
+                            Text(
+                              '${item.period}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Month: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.month}'),
+                            Text(
+                              '${item.month}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Week: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.week}'),
+                            Text(
+                              '${item.week}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Category: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
                             Text('${item.category}'),
                             SizedBox(height: 10),
                             Text(
                               'SKU Description: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.skuDescription}'),
+                            Text(
+                              '${item.skuDescription}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Products: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.products}'),
+                            Text(
+                              '${item.products}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'SKU Code: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.skuCode}'),
+                            Text(
+                              '${item.skuCode}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Status: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.status}'),
+                            Text(
+                              '${item.status}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Beginning: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.beginning}'),
+                            Text(
+                              '${item.beginning}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Delivery: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.delivery}'),
+                            Text(
+                              '${item.delivery}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Ending: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.ending}'),
+                            Text(
+                              '${item.ending}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Offtake: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.offtake}'),
+                            Text(
+                              '${item.offtake}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Inventory Days Level: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.inventoryDaysLevel}'),
+                            Text(
+                              '${item.inventoryDaysLevel}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Number of Days OOS: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.noOfDaysOOS}'),
+                            Text(
+                              '${item.noOfDaysOOS}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ],
                         ),
                       ),
@@ -368,11 +455,11 @@ class _RTVState extends State<RTV> {
                 return ListView.builder(
                   itemCount: rtvItems.length,
                   itemBuilder: (context, index) {
-                    ReturnToVendor item = rtvItems[index];
+                    ReturnToVendor item = rtvItems.reversed.toList()[index];
                     return ListTile(
                       subtitle: Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color: Colors.grey.shade200,
                           border: Border.all(
                             color: Colors.black,
                             width: 1.0,
@@ -384,57 +471,102 @@ class _RTVState extends State<RTV> {
                           children: [
                             Text(
                               'Date: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.date}'),
+                            Text(
+                              '${item.date}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Merchandiser: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.merchandiserName}'),
+                            Text(
+                              '${item.merchandiserName}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Outlet: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.outlet}'),
+                            Text(
+                              '${item.outlet}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Category: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.category}'),
+                            Text(
+                              '${item.category}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Item: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.item}'),
+                            Text(
+                              '${item.item}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Quantity: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.quantity}'),
+                            Text(
+                              '${item.quantity}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Driver\'s Name: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.driverName}'),
+                            Text(
+                              '${item.driverName}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Plate Number: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.plateNumber}'),
+                            Text(
+                              '${item.plateNumber}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Pull Out Reason: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('${item.pullOutReason}'),
+                            Text(
+                              '${item.pullOutReason}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ],
                         ),
                       ),
@@ -501,10 +633,11 @@ class Setting extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 700, // Add space between the button and surrounding content
+            height: 650, // Add space between the button and surrounding content
           ),
           Center(
             child: SizedBox(
+              height: 50,
               width: 350, // Set width to match the screen width
               child: ElevatedButton(
                 onPressed: () {
