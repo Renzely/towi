@@ -137,6 +137,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.6"
+  email_otp:
+    dependency: "direct main"
+    description:
+      name: email_otp
+      sha256: c19c35c3df43ca0d5cf763c9cfb682455c0defc629903704cd1ed4dfc21440c1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
   fake_async:
     dependency: transitive
     description:
@@ -309,6 +317,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  mailer:
+    dependency: "direct main"
+    description:
+      name: mailer
+      sha256: d25d89555c1031abacb448f07b801d7c01b4c21d4558e944b12b64394c84a3cb
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   matcher:
     dependency: transitive
     description:
@@ -333,6 +349,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      sha256: "2e123074287cc9fd6c09de8336dae606d1ddb88d9ac47358826db698c176a1f2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   mongo_dart:
     dependency: "direct dev"
     description:

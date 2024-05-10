@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously, unused_element
+// ignore_for_file: prefer_final_fields, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously, unused_element, avoid_unnecessary_containers
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
@@ -95,20 +95,20 @@ class _AddInventoryState extends State<AddInventory> {
             'Inventory Input',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => Inventory(
-                    userName: widget.userName,
-                    userLastName: widget.userLastName,
-                    userEmail: widget.userEmail,
-                  ),
-                ),
-              );
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(Icons.arrow_back),
+          //   onPressed: () {
+          //     Navigator.of(context).pushReplacement(
+          //       MaterialPageRoute(
+          //         builder: (context) => Inventory(
+          //           userName: widget.userName,
+          //           userLastName: widget.userLastName,
+          //           userEmail: widget.userEmail,
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -123,29 +123,29 @@ class _AddInventoryState extends State<AddInventory> {
                   children: [
                     Text(
                       'Date',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                     SizedBox(height: 8),
                     Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   border: Border(
+                      //     bottom: BorderSide(
+                      //       color: Colors.black,
+                      //       width: 1.0,
+                      //     ),
+                      //   ),
+                      // ),
                       child: Row(
                         children: [
                           Expanded(
                             child: TextFormField(
                               controller: _dateController,
-                              readOnly: true,
+                              // readOnly: true,
                               decoration: InputDecoration(
                                 enabled: false,
-                                hintText: 'Select Date',
-                                border: InputBorder.none,
                               ),
                             ),
                           ),
@@ -825,23 +825,29 @@ class _AddInventoryState extends State<AddInventory> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
-                          onPressed: _isSaveEnabled
-                              ? () {
-                                  // Perform cancel action
-                                }
-                              : null,
+                          onPressed: () {
+                            // Perform cancel action
+
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => Inventory(
+                                  userName: widget.userName,
+                                  userLastName: widget.userLastName,
+                                  userEmail: widget.userEmail,
+                                ),
+                              ),
+                            );
+                          },
                           style: ButtonStyle(
-                            padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(150, 50),
-                            ),
-                            backgroundColor: _isSaveEnabled
-                                ? MaterialStateProperty.all<Color>(Colors.green)
-                                : MaterialStateProperty.all<Color>(Colors.grey),
-                          ),
+                              padding:
+                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.symmetric(vertical: 15),
+                              ),
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                const Size(150, 50),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.green)),
                           child: const Text(
                             'Cancel',
                             style: TextStyle(
@@ -884,7 +890,7 @@ class _AddInventoryState extends State<AddInventory> {
                                 : MaterialStateProperty.all<Color>(Colors.grey),
                           ),
                           child: const Text(
-                            'Proceed',
+                            'Next',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -956,6 +962,7 @@ class _SKUInventoryState extends State<SKUInventory> {
   bool _showCarriedTextField = false;
   bool _showNotCarriedTextField = false;
   bool _showDelistedTextField = false;
+  bool _isSaveEnabled = false;
   TextEditingController _beginningController = TextEditingController();
   TextEditingController _deliveryController = TextEditingController();
   TextEditingController _endingController = TextEditingController();
@@ -1089,7 +1096,7 @@ class _SKUInventoryState extends State<SKUInventory> {
   }
 
   Map<String, List<String>> _categoryToSkuDescriptions = {
-    'v1': [
+    'V1': [
       'KOPIKO COFFEE CANDY 24X175G',
       'KOPIKO COFFEE CANDY JAR 6X560G',
       'KOPIKO CAPPUCCINO CANDY 24X175G',
@@ -1138,7 +1145,7 @@ class _SKUInventoryState extends State<SKUInventory> {
       'VALMER SANDWICH CHOCOLATE 12X10X36G',
       'MALKIST CAPPUCCINO 30X10X23G PH',
     ],
-    'v2': [
+    'V2': [
       'KOPIKO BLACK 3 IN ONE HANGER 24 X 10 X 30G',
       'KOPIKO BLACK 3 IN ONE POUCH 24 X 10 X 30G',
       'KOPIKO BLACK 3 IN ONE BAG 8 X 30 X 30G',
@@ -1171,7 +1178,7 @@ class _SKUInventoryState extends State<SKUInventory> {
           'ENERGEN CHAMPION NBA TP 15 X 8 X 2 X 30G PH',
       'BLACK 420011 KOPIKO BLACK 3IN1 TWINPACK 12 X 10 X 2 X 28G',
     ],
-    'v3': [
+    'V3': [
       'LE MINERALE 24x330ML',
       'LE MINERALE 24x600ML',
       'LE MINERALE 12x1500ML',
@@ -1549,6 +1556,7 @@ class _SKUInventoryState extends State<SKUInventory> {
     _deliveryController.addListener(_calculateOfftake);
     _endingController.addListener(_calculateOfftake);
     _offtakeController.addListener(_calculateInventoryDaysLevel);
+    checkSaveEnabled();
   }
 
   @override
@@ -1576,409 +1584,430 @@ class _SKUInventoryState extends State<SKUInventory> {
     _inventoryDaysLevelController.text = inventoryDaysLevel.toStringAsFixed(2);
   }
 
+  void checkSaveEnabled() {
+    setState(() {
+      if (_statusSelected == 'Carried') {
+        // Enable Save button only if beginning, delivery, and ending fields are filled
+        _isSaveEnabled = _beginningController.text.isNotEmpty &&
+            _deliveryController.text.isNotEmpty &&
+            _endingController.text.isNotEmpty;
+      } else {
+        // Enable Save button for "Not Carried" and "Delisted" categories
+        _isSaveEnabled = true;
+      }
+    });
+  }
+
+  bool isSaveEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green[600],
-          elevation: 0,
-          title: Text(
-            'Inventory Form',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green[600],
+            elevation: 0,
+            title: Text(
+              'Inventory Input',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SingleChildScrollView(
-            // Wrap with SingleChildScrollView
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Week Number',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                TextField(
-                  controller: _accountNameController,
-                  decoration: InputDecoration(
-                    enabled: false,
-                    hintText: widget.selectedWeek,
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SingleChildScrollView(
+              // Wrap with SingleChildScrollView
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Week Number',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                ),
-                Text(
-                  'Month',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                TextField(
-                  controller: _accountNameController,
-                  decoration: InputDecoration(
-                    enabled: false,
-                    hintText: widget.selectedMonth,
+                  TextField(
+                    controller: _accountNameController,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      hintText: widget.selectedWeek,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Account Branch Name',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                TextField(
-                  controller: _accountNameController,
-                  decoration: InputDecoration(
-                      enabled: false, hintText: widget.selectedAccount),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Category',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () => _toggleDropdown('v1'),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                            width: 2.0,
-                            color: _versionSelected == 'v1'
-                                ? Colors.green
-                                : Colors.blueGrey.shade200),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      child: Text(
-                        'v1',
-                        style: TextStyle(color: Colors.black),
-                      ),
+                  Text(
+                    'Month',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  TextField(
+                    controller: _accountNameController,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      hintText: widget.selectedMonth,
                     ),
-                    OutlinedButton(
-                      onPressed: () => _toggleDropdown('v2'),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                            width: 2.0,
-                            color: _versionSelected == 'v2'
-                                ? Colors.green
-                                : Colors.blueGrey.shade200),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      child: Text(
-                        'v2',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => _toggleDropdown('v3'),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                            width: 2.0,
-                            color: _versionSelected == 'v3'
-                                ? Colors.green
-                                : Colors.blueGrey.shade200),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      child: Text(
-                        'v3',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-                // Add text fields where user input is expected, and assign controllers
-                if (_isDropdownVisible && _versionSelected != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Account Branch Name',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  TextField(
+                    controller: _accountNameController,
+                    decoration: InputDecoration(
+                        enabled: false, hintText: widget.selectedAccount),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Category',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('V1'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _versionSelected == 'V1'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
                         child: Text(
-                          'SKU Description',
-                          style: TextStyle(
+                          'V1',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('V2'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _versionSelected == 'V2'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text(
+                          'V2',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _toggleDropdown('V3'),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                              width: 2.0,
+                              color: _versionSelected == 'V3'
+                                  ? Colors.green
+                                  : Colors.blueGrey.shade200),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text(
+                          'V3',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Add text fields where user input is expected, and assign controllers
+                  if (_isDropdownVisible && _versionSelected != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'SKU Description',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16, // Adjust as needed
+                            ),
+                          ),
+                        ),
+                        _buildDropdown(
+                          '',
+                          _selectSKU,
+                          _categoryToSkuDescriptions[_versionSelected]!,
+                        ),
+                        if (_productDetails != null) ...[
+                          SizedBox(height: 10),
+                          Text(
+                            'Products',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          TextField(
+                            enabled: false,
+                            controller:
+                                _productsController, // Assigning controller
+                            decoration: InputDecoration(
+                              hintText: _productDetails,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'SKU Code',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          TextField(
+                            enabled: false,
+                            controller:
+                                _skuCodeController, // Assigning controller
+                            decoration: InputDecoration(
+                              hintText: _skuCode,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (_productDetails != null)
+                        OutlinedButton(
+                          onPressed: () {
+                            _toggleCarriedTextField('Carried');
+                            checkSaveEnabled(); // Call checkSaveEnabled when category changes
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                                width: 2.0,
+                                color: _statusSelected == 'Carried'
+                                    ? Colors.green
+                                    : Colors.blueGrey.shade200),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: Text(
+                            'Carried',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      if (_productDetails != null)
+                        OutlinedButton(
+                          onPressed: () {
+                            _toggleNotCarriedTextField('Not Carried');
+                            checkSaveEnabled(); // Call checkSaveEnabled when category changes
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                                width: 2.0,
+                                color: _statusSelected == 'Not Carried'
+                                    ? Colors.green
+                                    : Colors.blueGrey.shade200),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: Text(
+                            'Not Carried',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      if (_productDetails != null)
+                        OutlinedButton(
+                          onPressed: () {
+                            _toggleDelistedTextField('Delisted');
+                            checkSaveEnabled(); // Call checkSaveEnabled when category changes
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                                width: 2.0,
+                                color: _statusSelected == 'Delisted'
+                                    ? Colors.green
+                                    : Colors.blueGrey.shade200),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: Text(
+                            'Delisted',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                    ],
+                  ),
+                  if (_showCarriedTextField)
+                    TextField(
+                      controller: _beginningController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        labelText: 'Beginning',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onChanged: (_) =>
+                          checkSaveEnabled(), // Call checkSaveEnabled on change
+                    ),
+                  if (_showCarriedTextField)
+                    TextField(
+                      controller: _deliveryController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        labelText: 'Delivery',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onChanged: (_) =>
+                          checkSaveEnabled(), // Call checkSaveEnabled on change
+                    ),
+                  if (_showCarriedTextField)
+                    TextField(
+                      controller: _endingController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        labelText: 'Ending',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onChanged: (_) =>
+                          checkSaveEnabled(), // Call checkSaveEnabled on change
+                    ),
+                  if (_showCarriedTextField)
+                    TextField(
+                      controller: _offtakeController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        enabled: false,
+                        labelText: 'Offtake',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  if (_showCarriedTextField)
+                    TextField(
+                      controller: _inventoryDaysLevelController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        enabled: false,
+                        labelText: 'Inventory days Level',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  if (_showCarriedTextField)
+                    if (_showCarriedTextField)
+                      DropdownButtonFormField<int>(
+                        decoration: InputDecoration(
+                          labelText: 'No. of Days OOS',
+                          labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16, // Adjust as needed
+                            fontSize: 16, // Adjust size as needed
                           ),
                         ),
+                        value: _selectedNumberOfDaysOOS,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedNumberOfDaysOOS = newValue;
+                          });
+                        },
+                        items: List.generate(8, (index) {
+                          return DropdownMenuItem<int>(
+                            value: index,
+                            child: Text(index.toString()),
+                          );
+                        }),
                       ),
-                      _buildDropdown(
-                        '',
-                        _selectSKU,
-                        _categoryToSkuDescriptions[_versionSelected]!,
-                      ),
-                      if (_productDetails != null) ...[
-                        SizedBox(height: 10),
-                        Text(
-                          'Products',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        TextField(
-                          enabled: false,
-                          controller:
-                              _productsController, // Assigning controller
-                          decoration: InputDecoration(
-                            hintText: _productDetails,
+                  SizedBox(height: 20),
+                  if (_showCarriedTextField ||
+                      _showNotCarriedTextField ||
+                      _showDelistedTextField)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _isSaveEnabled
+                              ? () async {
+                                  bool confirmed = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Save Confirmation'),
+                                        content: Text(
+                                            'Do you want to save this inventory item?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: Text('Confirm'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  if (confirmed ?? false) {
+                                    _saveInventoryItem();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Inventory item saved'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  }
+                                }
+                              : null, // Disable button if !_isSaveEnabled
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            minimumSize: MaterialStateProperty.all<Size>(
+                              const Size(150, 50),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                _isSaveEnabled ? Colors.green : Colors.grey),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'SKU Code',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        TextField(
-                          enabled: false,
-                          controller:
-                              _skuCodeController, // Assigning controller
-                          decoration: InputDecoration(
-                            hintText: _skuCode,
+                          child: const Text(
+                            'Save',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
-                    ],
-                  ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (_productDetails != null)
-                      OutlinedButton(
-                        onPressed: () => _toggleCarriedTextField(
-                            'Carried'), // Pass 'Carried' as the status
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                              width: 2.0,
-                              color: _statusSelected == 'Carried'
-                                  ? Colors.green
-                                  : Colors.blueGrey.shade200),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: Text(
-                          'Carried',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    if (_productDetails != null)
-                      OutlinedButton(
-                        onPressed: () => _toggleNotCarriedTextField(
-                            'Not Carried'), // Pass 'Not Carried' as the status
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                              width: 2.0,
-                              color: _statusSelected == 'Not Carried'
-                                  ? Colors.green
-                                  : Colors.blueGrey.shade200),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: Text(
-                          'Not Carried',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    if (_productDetails != null)
-                      OutlinedButton(
-                        onPressed: () => _toggleDelistedTextField(
-                            'Delisted'), // Pass 'Delisted' as the status
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                              width: 2.0,
-                              color: _statusSelected == 'Delisted'
-                                  ? Colors.green
-                                  : Colors.blueGrey.shade200),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: Text(
-                          'Delisted',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                  ],
-                ),
-                if (_showCarriedTextField)
-                  TextField(
-                    controller: _beginningController,
-                    keyboardType:
-                        TextInputType.number, // Set keyboardType to number
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ], // Allow only digits
-                    decoration: InputDecoration(
-                      labelText: 'Beginning',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
                     ),
-                  ),
-                if (_showCarriedTextField)
-                  TextField(
-                    controller: _deliveryController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      labelText: 'Delivery',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                if (_showCarriedTextField)
-                  TextField(
-                    controller: _endingController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      labelText: 'Ending',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                if (_showCarriedTextField)
-                  TextField(
-                    controller: _offtakeController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      enabled: false,
-                      labelText: 'Offtake',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                if (_showCarriedTextField)
-                  TextField(
-                    controller: _inventoryDaysLevelController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      enabled: false,
-                      labelText: 'Inventory days Level',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                if (_showCarriedTextField)
-                  if (_showCarriedTextField)
-                    DropdownButtonFormField<int>(
-                      decoration: InputDecoration(
-                        labelText: 'No. of Days OOS',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16, // Adjust size as needed
-                        ),
-                      ),
-                      value: _selectedNumberOfDaysOOS,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedNumberOfDaysOOS = newValue;
-                        });
-                      },
-                      items: List.generate(8, (index) {
-                        return DropdownMenuItem<int>(
-                          value: index,
-                          child: Text(index.toString()),
-                        );
-                      }),
-                    ),
-                SizedBox(height: 20),
-                if (_showCarriedTextField ||
-                    _showNotCarriedTextField ||
-                    _showDelistedTextField)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          bool confirmed = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Save Confirmation'),
-                                content: Text(
-                                    'Do you want to save this inventory item?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(
-                                          false); // Return false if cancelled
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(
-                                          true); // Return true if confirmed
-                                    },
-                                    child: Text('Confirm'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-
-                          if (confirmed ?? false) {
-                            _saveInventoryItem();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Inventory item saved'),
-                                duration: Duration(
-                                    seconds:
-                                        2), // Adjust the duration as needed
-                              ),
-                            );
-                            Navigator.pop(
-                                context); // Navigate back to the Inventory screen
-                          }
-                        },
-                        style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(vertical: 15),
-                          ),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                            const Size(150, 50),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildDropdown(

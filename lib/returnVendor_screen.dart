@@ -36,15 +36,15 @@ class _ReturnVendorState extends State<ReturnVendor> {
   List<String> itemOptions = [];
 
   Map<String, List<String>> _categoryToSkuDescriptions = {
-    'v1': [
+    'V1': [
       'KOPIKO COFFEE CANDY 24X175G',
       // Add more SKU descriptions...
     ],
-    'v2': [
+    'V2': [
       'KOPIKO BLACK 3 IN ONE HANGER 24 X 10 X 30G',
       // Add more SKU descriptions...
     ],
-    'v3': [
+    'V3': [
       'LE MINERALE 24x330ML',
       // Add more SKU descriptions...
     ],
@@ -67,7 +67,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
   void updateItemOptions(String category) {
     setState(() {
       switch (category) {
-        case 'v1':
+        case 'V1':
           itemOptions = [
             'KOPIKO COFFEE CANDY 24X175G',
             'KOPIKO COFFEE CANDY JAR 6X560G',
@@ -102,7 +102,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
             'DANISA BUTTER COOKIES 12X454G',
           ];
           break;
-        case 'v2':
+        case 'V2':
           itemOptions = [
             'KOPIKO BLACK 3 IN ONE HANGER 24 X 10 X 30G',
             'KOPIKO BLACK 3 IN ONE POUCH 24 X 10 X 30G',
@@ -137,7 +137,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
             'BLACK 420011 KOPIKO BLACK 3IN1 TWINPACK 12 X 10 X 2 X 28G',
           ];
           break;
-        case 'v3':
+        case 'V3':
           itemOptions = [
             'LE MINERALE 24x330ML',
             'LE MINERALE 24x600ML',
@@ -153,6 +153,8 @@ class _ReturnVendorState extends State<ReturnVendor> {
     });
   }
 
+  bool isSaveEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -164,20 +166,6 @@ class _ReturnVendorState extends State<ReturnVendor> {
           title: Text(
             'Return to Vendor Input',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => RTV(
-                    userName: widget.userName,
-                    userLastName: widget.userLastName,
-                    userEmail: widget.userEmail,
-                  ),
-                ),
-              );
-            },
           ),
         ),
         body: SingleChildScrollView(
@@ -192,14 +180,6 @@ class _ReturnVendorState extends State<ReturnVendor> {
                 ),
                 SizedBox(height: 8),
                 Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black,
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -208,7 +188,6 @@ class _ReturnVendorState extends State<ReturnVendor> {
                             enabled: false,
                             hintText:
                                 DateFormat('yyyy-MM-dd').format(selectedDate),
-                            border: InputBorder.none,
                           ),
                         ),
                       ),
@@ -315,7 +294,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'Quanity',
+                  'Quantity',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 TextFormField(
@@ -325,6 +304,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
                   onChanged: (value) {
                     setState(() {
                       quantity = value;
+                      checkSaveEnabled();
                     });
                   },
                 ),
@@ -340,6 +320,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
                   onChanged: (value) {
                     setState(() {
                       driverName = value;
+                      checkSaveEnabled();
                     });
                   },
                 ),
@@ -355,6 +336,7 @@ class _ReturnVendorState extends State<ReturnVendor> {
                   onChanged: (value) {
                     setState(() {
                       plateNumber = value;
+                      checkSaveEnabled();
                     });
                   },
                 ),
@@ -370,59 +352,49 @@ class _ReturnVendorState extends State<ReturnVendor> {
                   onChanged: (value) {
                     setState(() {
                       pullOutReason = value;
+                      checkSaveEnabled();
                     });
                   },
                 ),
                 SizedBox(height: 16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () async {
-                        bool confirmed = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Save Confirmation'),
-                              content: Text(
-                                  'Do you want to save this Return to Vendor?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(
-                                        false); // Return false if cancelled
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(true); // Return true if confirmed
-                                  },
-                                  child: Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => RTV(
+                              userName: widget.userName,
+                              userLastName: widget.userLastName,
+                              userEmail: widget.userEmail,
+                            ),
+                          ),
                         );
-
-                        if (confirmed ?? false) {
-                          _saveReturnToVendor();
-                          // Navigate back to ReturnToVendor screen
-                          Navigator.of(context).pop();
-                        }
                       },
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        minimumSize: MaterialStateProperty.all<Size>(
-                          const Size(150, 50),
-                        ),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.green),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        backgroundColor: Colors.green,
+                        minimumSize: Size(150, 50),
                       ),
-                      child: const Text(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed:
+                          isSaveEnabled ? _confirmSaveReturnToVendor : null,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        backgroundColor:
+                            isSaveEnabled ? Colors.green : Colors.grey,
+                        minimumSize: Size(150, 50),
+                      ),
+                      child: Text(
                         'Save',
                         style: TextStyle(
                           color: Colors.white,
@@ -445,6 +417,47 @@ class _ReturnVendorState extends State<ReturnVendor> {
       selectedCategory = value;
       updateItemOptions(selectedCategory);
     });
+  }
+
+  void checkSaveEnabled() {
+    setState(() {
+      isSaveEnabled = quantity.isNotEmpty &&
+          driverName.isNotEmpty &&
+          plateNumber.isNotEmpty &&
+          pullOutReason.isNotEmpty;
+    });
+  }
+
+  void _confirmSaveReturnToVendor() async {
+    bool confirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Save Confirmation'),
+          content: Text('Do you want to save this Return to Vendor?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false if cancelled
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true if confirmed
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed ?? false) {
+      _saveReturnToVendor();
+      // Navigate back to ReturnToVendor screen
+      Navigator.of(context).pop();
+    }
   }
 
   void _saveReturnToVendor() async {
