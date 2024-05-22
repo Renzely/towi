@@ -16,6 +16,7 @@ class MongoDemo {
   final String contactNum;
   final String username;
   final String password;
+  final String accountNameBranchManning;
 
   MongoDemo({
     required this.remarks,
@@ -26,6 +27,7 @@ class MongoDemo {
     required this.contactNum,
     required this.username,
     required this.password,
+    required this.accountNameBranchManning,
   });
 
   factory MongoDemo.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class MongoDemo {
       contactNum: json['contactNum'],
       username: json['username'],
       password: json['password'],
+      accountNameBranchManning: json['accountNameBranchManning'],
     );
   }
 
@@ -50,6 +53,7 @@ class MongoDemo {
         'contactNum': contactNum,
         'username': username,
         'password': password,
+        'accountNameBranchManning': accountNameBranchManning,
       };
 }
 
@@ -72,7 +76,7 @@ class InventoryItem {
   String date;
   String inputId;
   String name;
-  String accountNameBranchManning;
+  //String accountNameBranchManning;
   String period;
   String month;
   String week;
@@ -94,7 +98,7 @@ class InventoryItem {
     required this.date,
     required this.inputId,
     required this.name,
-    required this.accountNameBranchManning,
+    //required this.accountNameBranchManning,
     required this.period,
     required this.month,
     required this.week,
@@ -117,7 +121,7 @@ class InventoryItem {
         date: json['date'] ?? '',
         inputId: json['inputId'] ?? '',
         name: json['name'] ?? '',
-        accountNameBranchManning: json['accountNameBranchManning'] ?? '',
+        //accountNameBranchManning: json['accountNameBranchManning'] ?? '',
         period: json['period'] ?? '',
         month: json['month'] ?? '',
         week: json['week'] ?? '',
@@ -142,7 +146,7 @@ class InventoryItem {
         'date': date,
         'inputId': inputId,
         'name': name,
-        'accountNameBranchManning': accountNameBranchManning,
+        //'accountNameBranchManning': accountNameBranchManning,
         'period': period,
         'month': month,
         'week': week,
