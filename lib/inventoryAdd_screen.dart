@@ -2,6 +2,7 @@
 
 import 'dart:math';
 import 'package:demo_app/dbHelper/constant.dart';
+import 'package:demo_app/dbHelper/mongodb.dart';
 import 'package:demo_app/dbHelper/mongodbDraft.dart';
 import 'package:flutter/services.dart';
 import 'package:demo_app/dashboard_screen.dart';
@@ -38,11 +39,7 @@ class _AddInventoryState extends State<AddInventory> {
   String _selectedWeek = '';
   String _selectedMonth = '';
 
-  Map<String, String> accountNameMap = {
-    '1': 'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO',
-    '2': 'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA',
-    '3': 'PUREGOD PRICE CLUB - BAGUIO',
-  };
+  List<String> _branchList = [];
 
   @override
   void initState() {
@@ -64,6 +61,7 @@ class _AddInventoryState extends State<AddInventory> {
         _selectedMonth = _monthController.text;
       });
     });
+    fetchBranches();
   }
 
   @override
@@ -83,830 +81,915 @@ class _AddInventoryState extends State<AddInventory> {
     return '2000$paddedRandom';
   }
 
+  Future<void> fetchBranches() async {
+    final data = await MongoDatabase.getBranchData();
+    if (mounted) {
+      setState(() {
+        _branchList = data
+            .map<String>(
+                (branch) => branch['accountNameBranchManning'] as String)
+            .toList();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green[600],
-          elevation: 0,
-          title: Text(
-            'Inventory Input',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green[600],
+            elevation: 0,
+            title: Text(
+              'Inventory Input',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            // leading: IconButton(
+            //   icon: Icon(Icons.arrow_back),
+            //   onPressed: () {
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) => Inventory(
+            //           userName: widget.userName,
+            //           userLastName: widget.userLastName,
+            //           userEmail: widget.userEmail,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
           ),
-          // leading: IconButton(
-          //   icon: Icon(Icons.arrow_back),
-          //   onPressed: () {
-          //     Navigator.of(context).pushReplacement(
-          //       MaterialPageRoute(
-          //         builder: (context) => Inventory(
-          //           userName: widget.userName,
-          //           userLastName: widget.userLastName,
-          //           userEmail: widget.userEmail,
-          //         ),
-          //       ),
-          //     );
-          //   },
-          // ),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              width: MediaQuery.of(context).size.width * 1.0,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Date',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      // decoration: BoxDecoration(
-                      //   border: Border(
-                      //     bottom: BorderSide(
-                      //       color: Colors.black,
-                      //       width: 1.0,
-                      //     ),
-                      //   ),
-                      // ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _dateController,
-                              // readOnly: true,
+          body: SingleChildScrollView(
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                width: MediaQuery.of(context).size.width * 1.0,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          // decoration: BoxDecoration(
+                          //   border: Border(
+                          //     bottom: BorderSide(
+                          //       color: Colors.black,
+                          //       width: 1.0,
+                          //     ),
+                          //   ),
+                          // ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _dateController,
+                                  // readOnly: true,
+                                  decoration: InputDecoration(
+                                    enabled: false,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Input ID',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          initialValue: generateInputID(),
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: 'Auto-generated Input ID',
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Merchandiser',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          initialValue:
+                              '${widget.userName} ${widget.userLastName}',
+                          enabled: false,
+                          decoration: InputDecoration(),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Account Name Branch Manning',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    DropdownButtonFormField<String>(
+                                      value: _selectedAccount,
+                                      items: _branchList.map((branch) {
+                                        return DropdownMenuItem<String>(
+                                          value: branch,
+                                          child: Text(branch),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedAccount = value;
+                                          _isSaveEnabled =
+                                              _selectedAccount != null &&
+                                                  _selectedPeriod != null;
+                                        });
+                                        // Disable dropdown if only one item is available
+                                        if ((_branchList?.length ?? 0) <= 1) {
+                                          return null;
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'Select',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                    // Conditionally show clear button
+                                    if (_selectedAccount != null)
+                                      Positioned(
+                                        right: 8.0,
+                                        child: IconButton(
+                                          icon: Icon(Icons.clear),
+                                          onPressed: () {
+                                            setState(() {
+                                              _selectedAccount = null;
+                                              _selectedPeriod = null;
+                                              _showAdditionalInfo = false;
+                                              _isSaveEnabled = false;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (_selectedAccount != null) ...[
+                          SizedBox(height: 16),
+                          Text(
+                            'Additional Information',
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'PERIOD',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      DropdownButtonFormField<String>(
+                                        value: _selectedPeriod,
+                                        items: [
+                                          DropdownMenuItem(
+                                            child: Text('Dec23-Dec29'),
+                                            value: 'Dec23-Dec29',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Dec30-Jan05'),
+                                            value: 'Dec30-Jan05',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jan06-Jan12'),
+                                            value: 'Jan06-Jan12',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jan13-Jan19'),
+                                            value: 'Jan13-Jan19',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jan20-Jan26'),
+                                            value: 'Jan20-Jan26',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jan27-Feb02'),
+                                            value: 'Jan27-Feb02',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Feb03-Feb09'),
+                                            value: 'Feb03-Feb09',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Feb10-Feb09'),
+                                            value: 'Feb10-Feb09',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Feb17-Feb23'),
+                                            value: 'Feb17-Feb23',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Feb24-Mar01'),
+                                            value: 'Feb24-Mar01',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Mar02-Mar08'),
+                                            value: 'Mar02-Mar08',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Mar09-Mar15'),
+                                            value: 'Mar09-Mar15',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Mar16-Mar22'),
+                                            value: 'Mar16-Mar22',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Mar23-Mar29'),
+                                            value: 'Mar23-Mar29',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Mar30-Apr05'),
+                                            value: 'Mar30-Apr05',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Apr06-Apr12'),
+                                            value: 'Apr06-Apr12',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Apr13-Apr19'),
+                                            value: 'Apr13-Apr19',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Apr20-Apr26'),
+                                            value: 'Apr20-Apr26',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Apr27-May03'),
+                                            value: 'Apr27-May03',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('May04-May10'),
+                                            value: 'May04-May10',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('May11-May17'),
+                                            value: 'May11-May17',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('May18-May24'),
+                                            value: 'May18-May24',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('May25-May31'),
+                                            value: 'May25-May31',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jun01-Jun07'),
+                                            value: 'Jun01-Jun07',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jun08-Jun14'),
+                                            value: 'Jun08-Jun14',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jun15-Jun21'),
+                                            value: 'Jun15-Jun21',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jun22-Jun28'),
+                                            value: 'Jun22-Jun28',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jul06-Jul12'),
+                                            value: 'Jul06-Jul12',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jul13-Jul19'),
+                                            value: 'Jul13-Jul19',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jul20-Jul26'),
+                                            value: 'Jul20-Jul26',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Jul27-Aug02'),
+                                            value: 'Jul27-Aug02',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Aug03-Aug09'),
+                                            value: 'Aug03-Aug09',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Aug10-Aug16'),
+                                            value: 'Aug10-Aug16',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Aug24-Aug30'),
+                                            value: 'Aug24-Aug30',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Aug31-Sep06'),
+                                            value: 'Aug31-Sep06',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Sep07-Sep13'),
+                                            value: 'Sep07-Sep13',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Sep14-Sep20'),
+                                            value: 'Sep14-Sep20',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Sep21-Sep27'),
+                                            value: 'Sep21-Sep27',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Sep28-Oct04'),
+                                            value: 'Sep28-Oct04',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Oct05-Oct11'),
+                                            value: 'Oct05-Oct11',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Oct12-Oct18'),
+                                            value: 'Oct12-Oct18',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Oct19-Oct25'),
+                                            value: 'Oct19-Oct25',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Oct26-Nov01'),
+                                            value: 'Oct26-Nov01',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Nov02-Nov08'),
+                                            value: 'Nov02-Nov08',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Nov09-Nov15'),
+                                            value: 'Nov09-Nov15',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Nov16-Nov22'),
+                                            value: 'Nov16-Nov22',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Nov23-Nov29'),
+                                            value: 'Nov23-Nov29',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Nov30-Dec06'),
+                                            value: 'Nov30-Dec06',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Dec07-Dec13'),
+                                            value: 'Dec07-Dec13',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Dec14-Dec20'),
+                                            value: 'Dec14-Dec20',
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text('Dec21-Dec27'),
+                                            value: 'Dec21-Dec27',
+                                          ),
+                                        ],
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedPeriod = value;
+                                            _isSaveEnabled =
+                                                _selectedAccount != null &&
+                                                    _selectedPeriod != null;
+                                            switch (value) {
+                                              case 'Dec23-Dec29':
+                                                _monthController.text =
+                                                    'December';
+                                                _weekController.text =
+                                                    'Week 52';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Dec30-Jan05':
+                                                _monthController.text =
+                                                    'January';
+                                                _weekController.text = 'Week 1';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jan06-Jan12':
+                                                _monthController.text =
+                                                    'January';
+                                                _weekController.text = 'Week 2';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jan13-Jan19':
+                                                _monthController.text =
+                                                    'January';
+                                                _weekController.text = 'Week 3';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jan20-Jan26':
+                                                _monthController.text =
+                                                    'January';
+                                                _weekController.text = 'Week 4';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jan27-Feb02':
+                                                _monthController.text =
+                                                    'February';
+                                                _weekController.text = 'Week 5';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Feb03-Feb09':
+                                                _monthController.text =
+                                                    'February';
+                                                _weekController.text = 'Week 6';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Feb10-Feb16':
+                                                _monthController.text =
+                                                    'February';
+                                                _weekController.text = 'Week 7';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Feb17-Feb23':
+                                                _monthController.text =
+                                                    'February';
+                                                _weekController.text = 'Week 8';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Feb24-Mar01':
+                                                _monthController.text = 'March';
+                                                _weekController.text = 'Week 9';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Mar02-Mar08':
+                                                _monthController.text = 'March';
+                                                _weekController.text =
+                                                    'Week 10';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Mar09-Mar15':
+                                                _monthController.text = 'March';
+                                                _weekController.text =
+                                                    'Week 11';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Mar16-Mar22':
+                                                _monthController.text = 'March';
+                                                _weekController.text =
+                                                    'Week 12';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Mar23-Mar29':
+                                                _monthController.text = 'March';
+                                                _weekController.text =
+                                                    'Week 13';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Mar30-Apr05':
+                                                _monthController.text = 'April';
+                                                _weekController.text =
+                                                    'Week 14';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Apr06-Apr12':
+                                                _monthController.text = 'April';
+                                                _weekController.text =
+                                                    'Week 15';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Apr13-Apr19':
+                                                _monthController.text = 'April';
+                                                _weekController.text =
+                                                    'Week 16';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Apr20-Apr26':
+                                                _monthController.text = 'April';
+                                                _weekController.text =
+                                                    'Week 17';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Apr27-May03':
+                                                _monthController.text = 'May';
+                                                _weekController.text =
+                                                    'Week 18';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'May04-May10':
+                                                _monthController.text = 'May';
+                                                _weekController.text =
+                                                    'Week 19';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'May11-May17':
+                                                _monthController.text = 'May';
+                                                _weekController.text =
+                                                    'Week 20';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'May18-May24':
+                                                _monthController.text = 'May';
+                                                _weekController.text =
+                                                    'Week 21';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'May25-May31':
+                                                _monthController.text = 'May';
+                                                _weekController.text =
+                                                    'Week 22';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jun01-Jun07':
+                                                _monthController.text = 'June';
+                                                _weekController.text =
+                                                    'Week 23';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jun08-Jun14':
+                                                _monthController.text = 'June';
+                                                _weekController.text =
+                                                    'Week 24';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jun15-Jun21':
+                                                _monthController.text = 'June';
+                                                _weekController.text =
+                                                    'Week 25';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jun22-Jun28':
+                                                _monthController.text = 'June';
+                                                _weekController.text =
+                                                    'Week 26';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jun29-Jul05':
+                                                _monthController.text = 'July';
+                                                _weekController.text =
+                                                    'Week 27';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jul06-Jul12':
+                                                _monthController.text = 'July';
+                                                _weekController.text =
+                                                    'Week 28';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jul13-Jul19':
+                                                _monthController.text = 'July';
+                                                _weekController.text =
+                                                    'Week 29';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jul20-Jul26':
+                                                _monthController.text = 'July';
+                                                _weekController.text =
+                                                    'Week 30';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Jul27-Aug02':
+                                                _monthController.text =
+                                                    'August';
+                                                _weekController.text =
+                                                    'Week 31';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Aug03-Aug09':
+                                                _monthController.text =
+                                                    'August';
+                                                _weekController.text =
+                                                    'Week 32';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Aug10-Aug16':
+                                                _monthController.text =
+                                                    'August';
+                                                _weekController.text =
+                                                    'Week 33';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Aug17-Aug23':
+                                                _monthController.text =
+                                                    'August';
+                                                _weekController.text =
+                                                    'Week 34';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Aug24-Aug30':
+                                                _monthController.text =
+                                                    'August';
+                                                _weekController.text =
+                                                    'Week 35';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Aug31-Sep06':
+                                                _monthController.text =
+                                                    'September';
+                                                _weekController.text =
+                                                    'Week 36';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Sep07-Sep13':
+                                                _monthController.text =
+                                                    'September';
+                                                _weekController.text =
+                                                    'Week 37';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Sep14-Sep20':
+                                                _monthController.text =
+                                                    'September';
+                                                _weekController.text =
+                                                    'Week 38';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Sep21-Sep27':
+                                                _monthController.text =
+                                                    'September';
+                                                _weekController.text =
+                                                    'Week 39';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Sep28-Oct04':
+                                                _monthController.text =
+                                                    'October';
+                                                _weekController.text =
+                                                    'Week 40';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Oct05-Oct11':
+                                                _monthController.text =
+                                                    'October';
+                                                _weekController.text =
+                                                    'Week 41';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Oct12-Oct18':
+                                                _monthController.text =
+                                                    'October';
+                                                _weekController.text =
+                                                    'Week 42';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Oct19-Oct25':
+                                                _monthController.text =
+                                                    'October';
+                                                _weekController.text =
+                                                    'Week 43';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Oct26-Nov01':
+                                                _monthController.text =
+                                                    'November';
+                                                _weekController.text =
+                                                    'Week 44';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Nov02-Nov08':
+                                                _monthController.text =
+                                                    'November';
+                                                _weekController.text =
+                                                    'Week 45';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Nov09-Nov15':
+                                                _monthController.text =
+                                                    'November';
+                                                _weekController.text =
+                                                    'Week 46';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Nov16-Nov22':
+                                                _monthController.text =
+                                                    'November';
+                                                _weekController.text =
+                                                    'Week 47';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Nov23-Nov29':
+                                                _monthController.text =
+                                                    'November';
+                                                _weekController.text =
+                                                    'Week 48';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Nov30-Dec06':
+                                                _monthController.text =
+                                                    'December';
+                                                _weekController.text =
+                                                    'Week 49';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Dec07-Dec13':
+                                                _monthController.text =
+                                                    'December';
+                                                _weekController.text =
+                                                    'Week 50';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Dec14-Dec20':
+                                                _monthController.text =
+                                                    'December';
+                                                _weekController.text =
+                                                    'Week 51';
+                                                _showAdditionalInfo = true;
+                                                break;
+                                              case 'Dec21-Dec27':
+                                                _monthController.text =
+                                                    'December';
+                                                _weekController.text =
+                                                    'Week 52';
+                                                _showAdditionalInfo = true;
+                                                break;
+
+                                              default:
+                                                _monthController.clear();
+                                                _weekController.clear();
+                                                _showAdditionalInfo = false;
+                                                break;
+                                            }
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: 'Select Period',
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                      if (_selectedPeriod != null)
+                                        Positioned(
+                                          right: 8.0,
+                                          child: IconButton(
+                                            icon: Icon(Icons.clear),
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedPeriod = null;
+                                                _showAdditionalInfo = false;
+                                                _isSaveEnabled = false;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (_showAdditionalInfo) ...[
+                            SizedBox(height: 16),
+                            Text('Month',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              controller: _monthController,
                               decoration: InputDecoration(
                                 enabled: false,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Input ID',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(height: 8),
-                    TextFormField(
-                      initialValue: generateInputID(),
-                      enabled: false,
-                      decoration: InputDecoration(
-                        hintText: 'Auto-generated Input ID',
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Merchandiser',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(height: 8),
-                    TextFormField(
-                      initialValue: '${widget.userName} ${widget.userLastName}',
-                      enabled: false,
-                      decoration: InputDecoration(),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Account Name Branch Manning',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                DropdownButtonFormField<String>(
-                                  value: _selectedAccount,
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text(
-                                          'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO'),
-                                      value: '1',
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text(
-                                          'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA'),
-                                      value: '2',
-                                    ),
-                                    DropdownMenuItem(
-                                      child:
-                                          Text('PUREGOD PRICE CLUB - BAGUIO'),
-                                      value: '3',
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedAccount = value;
-                                      _isSaveEnabled =
-                                          _selectedAccount != null &&
-                                              _selectedPeriod != null;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Select',
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                                if (_selectedAccount != null)
-                                  Positioned(
-                                    right: 8.0,
-                                    child: IconButton(
-                                      icon: Icon(Icons.clear),
-                                      onPressed: () {
-                                        setState(() {
-                                          _selectedAccount = null;
-                                          _selectedPeriod = null;
-                                          _showAdditionalInfo = false;
-                                          _isSaveEnabled = false;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                              ],
+                            SizedBox(height: 8),
+                            Text(
+                              'Week',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (_selectedAccount != null) ...[
-                      SizedBox(height: 16),
-                      Text(
-                        'Additional Information',
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'PERIOD',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(height: 8),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.black,
-                              width: 1.0,
+                            TextFormField(
+                              controller: _weekController,
+                              decoration: InputDecoration(
+                                enabled: false,
+                              ),
                             ),
-                          ),
-                        ),
-                        child: Row(
+                          ],
+                        ],
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerRight,
-                                children: [
-                                  DropdownButtonFormField<String>(
-                                    value: _selectedPeriod,
-                                    items: [
-                                      DropdownMenuItem(
-                                        child: Text('Dec23-Dec29'),
-                                        value: 'Dec23-Dec29',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Dec30-Jan05'),
-                                        value: 'Dec30-Jan05',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jan06-Jan12'),
-                                        value: 'Jan06-Jan12',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jan13-Jan19'),
-                                        value: 'Jan13-Jan19',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jan20-Jan26'),
-                                        value: 'Jan20-Jan26',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jan27-Feb02'),
-                                        value: 'Jan27-Feb02',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Feb03-Feb09'),
-                                        value: 'Feb03-Feb09',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Feb10-Feb09'),
-                                        value: 'Feb10-Feb09',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Feb17-Feb23'),
-                                        value: 'Feb17-Feb23',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Feb24-Mar01'),
-                                        value: 'Feb24-Mar01',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Mar02-Mar08'),
-                                        value: 'Mar02-Mar08',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Mar09-Mar15'),
-                                        value: 'Mar09-Mar15',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Mar16-Mar22'),
-                                        value: 'Mar16-Mar22',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Mar23-Mar29'),
-                                        value: 'Mar23-Mar29',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Mar30-Apr05'),
-                                        value: 'Mar30-Apr05',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Apr06-Apr12'),
-                                        value: 'Apr06-Apr12',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Apr13-Apr19'),
-                                        value: 'Apr13-Apr19',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Apr20-Apr26'),
-                                        value: 'Apr20-Apr26',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Apr27-May03'),
-                                        value: 'Apr27-May03',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('May04-May10'),
-                                        value: 'May04-May10',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('May11-May17'),
-                                        value: 'May11-May17',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('May18-May24'),
-                                        value: 'May18-May24',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('May25-May31'),
-                                        value: 'May25-May31',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jun01-Jun07'),
-                                        value: 'Jun01-Jun07',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jun08-Jun14'),
-                                        value: 'Jun08-Jun14',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jun15-Jun21'),
-                                        value: 'Jun15-Jun21',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jun22-Jun28'),
-                                        value: 'Jun22-Jun28',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jul06-Jul12'),
-                                        value: 'Jul06-Jul12',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jul13-Jul19'),
-                                        value: 'Jul13-Jul19',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jul20-Jul26'),
-                                        value: 'Jul20-Jul26',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Jul27-Aug02'),
-                                        value: 'Jul27-Aug02',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Aug03-Aug09'),
-                                        value: 'Aug03-Aug09',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Aug10-Aug16'),
-                                        value: 'Aug10-Aug16',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Aug24-Aug30'),
-                                        value: 'Aug24-Aug30',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Aug31-Sep06'),
-                                        value: 'Aug31-Sep06',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Sep07-Sep13'),
-                                        value: 'Sep07-Sep13',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Sep14-Sep20'),
-                                        value: 'Sep14-Sep20',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Sep21-Sep27'),
-                                        value: 'Sep21-Sep27',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Sep28-Oct04'),
-                                        value: 'Sep28-Oct04',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Oct05-Oct11'),
-                                        value: 'Oct05-Oct11',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Oct12-Oct18'),
-                                        value: 'Oct12-Oct18',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Oct19-Oct25'),
-                                        value: 'Oct19-Oct25',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Oct26-Nov01'),
-                                        value: 'Oct26-Nov01',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Nov02-Nov08'),
-                                        value: 'Nov02-Nov08',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Nov09-Nov15'),
-                                        value: 'Nov09-Nov15',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Nov16-Nov22'),
-                                        value: 'Nov16-Nov22',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Nov23-Nov29'),
-                                        value: 'Nov23-Nov29',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Nov30-Dec06'),
-                                        value: 'Nov30-Dec06',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Dec07-Dec13'),
-                                        value: 'Dec07-Dec13',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Dec14-Dec20'),
-                                        value: 'Dec14-Dec20',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('Dec21-Dec27'),
-                                        value: 'Dec21-Dec27',
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedPeriod = value;
-                                        _isSaveEnabled =
-                                            _selectedAccount != null &&
-                                                _selectedPeriod != null;
-                                        switch (value) {
-                                          case 'Dec23-Dec29':
-                                            _monthController.text = 'December';
-                                            _weekController.text = 'Week 52';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Dec30-Jan05':
-                                            _monthController.text = 'January';
-                                            _weekController.text = 'Week 1';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jan06-Jan12':
-                                            _monthController.text = 'January';
-                                            _weekController.text = 'Week 2';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jan13-Jan19':
-                                            _monthController.text = 'January';
-                                            _weekController.text = 'Week 3';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jan20-Jan26':
-                                            _monthController.text = 'January';
-                                            _weekController.text = 'Week 4';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jan27-Feb02':
-                                            _monthController.text = 'February';
-                                            _weekController.text = 'Week 5';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Feb03-Feb09':
-                                            _monthController.text = 'February';
-                                            _weekController.text = 'Week 6';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Feb10-Feb16':
-                                            _monthController.text = 'February';
-                                            _weekController.text = 'Week 7';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Feb17-Feb23':
-                                            _monthController.text = 'February';
-                                            _weekController.text = 'Week 8';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Feb24-Mar01':
-                                            _monthController.text = 'March';
-                                            _weekController.text = 'Week 9';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Mar02-Mar08':
-                                            _monthController.text = 'March';
-                                            _weekController.text = 'Week 10';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Mar09-Mar15':
-                                            _monthController.text = 'March';
-                                            _weekController.text = 'Week 11';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Mar16-Mar22':
-                                            _monthController.text = 'March';
-                                            _weekController.text = 'Week 12';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Mar23-Mar29':
-                                            _monthController.text = 'March';
-                                            _weekController.text = 'Week 13';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Mar30-Apr05':
-                                            _monthController.text = 'April';
-                                            _weekController.text = 'Week 14';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Apr06-Apr12':
-                                            _monthController.text = 'April';
-                                            _weekController.text = 'Week 15';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Apr13-Apr19':
-                                            _monthController.text = 'April';
-                                            _weekController.text = 'Week 16';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Apr20-Apr26':
-                                            _monthController.text = 'April';
-                                            _weekController.text = 'Week 17';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Apr27-May03':
-                                            _monthController.text = 'May';
-                                            _weekController.text = 'Week 18';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'May04-May10':
-                                            _monthController.text = 'May';
-                                            _weekController.text = 'Week 19';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'May11-May17':
-                                            _monthController.text = 'May';
-                                            _weekController.text = 'Week 20';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'May18-May24':
-                                            _monthController.text = 'May';
-                                            _weekController.text = 'Week 21';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'May25-May31':
-                                            _monthController.text = 'May';
-                                            _weekController.text = 'Week 22';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jun01-Jun07':
-                                            _monthController.text = 'June';
-                                            _weekController.text = 'Week 23';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jun08-Jun14':
-                                            _monthController.text = 'June';
-                                            _weekController.text = 'Week 24';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jun15-Jun21':
-                                            _monthController.text = 'June';
-                                            _weekController.text = 'Week 25';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jun22-Jun28':
-                                            _monthController.text = 'June';
-                                            _weekController.text = 'Week 26';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jun29-Jul05':
-                                            _monthController.text = 'July';
-                                            _weekController.text = 'Week 27';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jul06-Jul12':
-                                            _monthController.text = 'July';
-                                            _weekController.text = 'Week 28';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jul13-Jul19':
-                                            _monthController.text = 'July';
-                                            _weekController.text = 'Week 29';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jul20-Jul26':
-                                            _monthController.text = 'July';
-                                            _weekController.text = 'Week 30';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Jul27-Aug02':
-                                            _monthController.text = 'August';
-                                            _weekController.text = 'Week 31';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Aug03-Aug09':
-                                            _monthController.text = 'August';
-                                            _weekController.text = 'Week 32';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Aug10-Aug16':
-                                            _monthController.text = 'August';
-                                            _weekController.text = 'Week 33';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Aug17-Aug23':
-                                            _monthController.text = 'August';
-                                            _weekController.text = 'Week 34';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Aug24-Aug30':
-                                            _monthController.text = 'August';
-                                            _weekController.text = 'Week 35';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Aug31-Sep06':
-                                            _monthController.text = 'September';
-                                            _weekController.text = 'Week 36';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Sep07-Sep13':
-                                            _monthController.text = 'September';
-                                            _weekController.text = 'Week 37';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Sep14-Sep20':
-                                            _monthController.text = 'September';
-                                            _weekController.text = 'Week 38';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Sep21-Sep27':
-                                            _monthController.text = 'September';
-                                            _weekController.text = 'Week 39';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Sep28-Oct04':
-                                            _monthController.text = 'October';
-                                            _weekController.text = 'Week 40';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Oct05-Oct11':
-                                            _monthController.text = 'October';
-                                            _weekController.text = 'Week 41';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Oct12-Oct18':
-                                            _monthController.text = 'October';
-                                            _weekController.text = 'Week 42';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Oct19-Oct25':
-                                            _monthController.text = 'October';
-                                            _weekController.text = 'Week 43';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Oct26-Nov01':
-                                            _monthController.text = 'November';
-                                            _weekController.text = 'Week 44';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Nov02-Nov08':
-                                            _monthController.text = 'November';
-                                            _weekController.text = 'Week 45';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Nov09-Nov15':
-                                            _monthController.text = 'November';
-                                            _weekController.text = 'Week 46';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Nov16-Nov22':
-                                            _monthController.text = 'November';
-                                            _weekController.text = 'Week 47';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Nov23-Nov29':
-                                            _monthController.text = 'November';
-                                            _weekController.text = 'Week 48';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Nov30-Dec06':
-                                            _monthController.text = 'December';
-                                            _weekController.text = 'Week 49';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Dec07-Dec13':
-                                            _monthController.text = 'December';
-                                            _weekController.text = 'Week 50';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Dec14-Dec20':
-                                            _monthController.text = 'December';
-                                            _weekController.text = 'Week 51';
-                                            _showAdditionalInfo = true;
-                                            break;
-                                          case 'Dec21-Dec27':
-                                            _monthController.text = 'December';
-                                            _weekController.text = 'Week 52';
-                                            _showAdditionalInfo = true;
-                                            break;
+                            ElevatedButton(
+                              onPressed: () {
+                                // Perform cancel action
 
-                                          default:
-                                            _monthController.clear();
-                                            _weekController.clear();
-                                            _showAdditionalInfo = false;
-                                            break;
-                                        }
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'Select Period',
-                                      border: InputBorder.none,
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => Inventory(
+                                      userName: widget.userName,
+                                      userLastName: widget.userLastName,
+                                      userEmail: widget.userEmail,
                                     ),
                                   ),
-                                  if (_selectedPeriod != null)
-                                    Positioned(
-                                      right: 8.0,
-                                      child: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        onPressed: () {
-                                          setState(() {
-                                            _selectedPeriod = null;
-                                            _showAdditionalInfo = false;
-                                            _isSaveEnabled = false;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                ],
+                                );
+                              },
+                              style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                  ),
+                                  minimumSize: MaterialStateProperty.all<Size>(
+                                    const Size(150, 50),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.green)),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: _isSaveEnabled
+                                  ? () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SKUInventory(
+                                                    userName: widget.userName,
+                                                    userLastName:
+                                                        widget.userLastName,
+                                                    userEmail: widget.userEmail,
+                                                    selectedAccount:
+                                                        _selectedAccount ?? '',
+                                                    SelectedPeriod:
+                                                        _selectedPeriod!,
+                                                    selectedWeek: _selectedWeek,
+                                                    selectedMonth:
+                                                        _selectedMonth,
+                                                    inputid: generateInputID(),
+                                                  )));
+                                    }
+                                  : null,
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(vertical: 15),
+                                ),
+                                minimumSize: MaterialStateProperty.all<Size>(
+                                  const Size(150, 50),
+                                ),
+                                backgroundColor: _isSaveEnabled
+                                    ? MaterialStateProperty.all<Color>(
+                                        Colors.green)
+                                    : MaterialStateProperty.all<Color>(
+                                        Colors.grey),
+                              ),
+                              child: const Text(
+                                'Next',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      if (_showAdditionalInfo) ...[
-                        SizedBox(height: 16),
-                        Text('Month',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16)),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          controller: _monthController,
-                          decoration: InputDecoration(
-                            enabled: false,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Week',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        TextFormField(
-                          controller: _weekController,
-                          decoration: InputDecoration(
-                            enabled: false,
-                          ),
-                        ),
-                      ],
-                    ],
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Perform cancel action
-
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => Inventory(
-                                  userName: widget.userName,
-                                  userLastName: widget.userLastName,
-                                  userEmail: widget.userEmail,
-                                ),
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                const Size(150, 50),
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.green)),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: _isSaveEnabled
-                              ? () {
-                                  Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                          builder: (context) => SKUInventory(
-                                                userName: widget.userName,
-                                                userLastName:
-                                                    widget.userLastName,
-                                                userEmail: widget.userEmail,
-                                                selectedAccount: accountNameMap[
-                                                        _selectedAccount!] ??
-                                                    '',
-                                                SelectedPeriod:
-                                                    _selectedPeriod!,
-                                                selectedWeek: _selectedWeek,
-                                                selectedMonth: _selectedMonth,
-                                                inputid: generateInputID(),
-                                              )));
-                                }
-                              : null,
-                          style: ButtonStyle(
-                            padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(150, 50),
-                            ),
-                            backgroundColor: _isSaveEnabled
-                                ? MaterialStateProperty.all<Color>(Colors.green)
-                                : MaterialStateProperty.all<Color>(Colors.grey),
-                          ),
-                          child: const Text(
-                            'Next',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      ]),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -1029,7 +1112,7 @@ class _SKUInventoryState extends State<SKUInventory> {
           .format(DateTime.now()), // Assuming current date for simplicity
       inputId: widget.inputid,
       name: '${widget.userName} ${widget.userLastName}',
-      accountNameBranchManning: widget.selectedAccount,
+      //accountNameBranchManning: widget.selectedAccount,
       period: widget.SelectedPeriod,
       month: widget.selectedMonth,
       week: widget.selectedWeek,

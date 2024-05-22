@@ -25,6 +25,8 @@ class _SignUpState extends State<SignUp> {
   var contactNumController = TextEditingController();
   var remarksController = TextEditingController();
   var selectedRemarks = 'REGULAR'; // Default choice
+  var branchController = TextEditingController(text: 'Branch');
+
   String? fnameError;
   String? lnameError;
   String? addressError;
@@ -92,6 +94,19 @@ class _SignUpState extends State<SignUp> {
                   }).toList(),
                   decoration: InputDecoration(
                     hintText: 'Remarks',
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  enabled: false, // Disable the TextField
+                  controller: branchController,
+                  decoration: InputDecoration(
+                    hintText: 'Branch',
                     fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
@@ -246,6 +261,7 @@ class _SignUpState extends State<SignUp> {
                             usernameController.text,
                             passwordController.text,
                             contactNumController.text,
+                            branchController.text,
                             selectedRemarks);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -303,6 +319,7 @@ class _SignUpState extends State<SignUp> {
     String userN,
     String pass, // Plain text password
     String contact_num,
+    String branch,
     String remarks,
   ) async {
     var _id = M.ObjectId();
@@ -312,14 +329,16 @@ class _SignUpState extends State<SignUp> {
     final hashedPassword = await hashPassword(plainPassword);
 
     final data = MongoDemo(
-      remarks: remarks,
       id: _id,
       firstName: fName,
       lastName: lName,
       emailAddress: emailAdd,
       contactNum: contact_num,
       username: userN,
-      password: hashedPassword, // Store the hashed password
+      password: hashedPassword,
+      accountNameBranchManning: branch,
+      remarks: remarks,
+      // Store the hashed password
     );
     var result = await MongoDatabase.insert(data);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -330,6 +349,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void _clearAll() {
+    branchController.text = "";
     fnameController.text = "";
     lnameController.text = "";
     addressController.text = "";

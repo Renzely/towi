@@ -79,4 +79,14 @@ class MongoDatabase {
       return null;
     }
   }
+
+  static Future<List<Map<String, dynamic>>> getBranchData() async {
+    var db = await Db.create(MONGO_CONN_URL);
+    await db.open();
+    var collection =
+        db.collection(USER_COLLECTION); // Ensure this is the correct collection
+    var branches = await collection.find().toList();
+    await db.close();
+    return branches;
+  }
 }
