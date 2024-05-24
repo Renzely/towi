@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:demo_app/dbHelper/constant.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:bcrypt/bcrypt.dart';
@@ -17,6 +18,7 @@ class MongoDemo {
   final String username;
   final String password;
   final String accountNameBranchManning;
+  final bool isActivate;
 
   MongoDemo({
     required this.remarks,
@@ -28,6 +30,7 @@ class MongoDemo {
     required this.username,
     required this.password,
     required this.accountNameBranchManning,
+    required this.isActivate,
   });
 
   factory MongoDemo.fromJson(Map<String, dynamic> json) {
@@ -41,6 +44,7 @@ class MongoDemo {
       username: json['username'],
       password: json['password'],
       accountNameBranchManning: json['accountNameBranchManning'],
+      isActivate: json['isActivate'],
     );
   }
 
@@ -54,6 +58,7 @@ class MongoDemo {
         'username': username,
         'password': password,
         'accountNameBranchManning': accountNameBranchManning,
+        'isActivate': isActivate
       };
 }
 
@@ -76,7 +81,7 @@ class InventoryItem {
   String date;
   String inputId;
   String name;
-  //String accountNameBranchManning;
+  String accountNameBranchManning;
   String period;
   String month;
   String week;
@@ -98,7 +103,7 @@ class InventoryItem {
     required this.date,
     required this.inputId,
     required this.name,
-    //required this.accountNameBranchManning,
+    required this.accountNameBranchManning,
     required this.period,
     required this.month,
     required this.week,
@@ -121,7 +126,7 @@ class InventoryItem {
         date: json['date'] ?? '',
         inputId: json['inputId'] ?? '',
         name: json['name'] ?? '',
-        //accountNameBranchManning: json['accountNameBranchManning'] ?? '',
+        accountNameBranchManning: json['accountNameBranchManning'] ?? '',
         period: json['period'] ?? '',
         month: json['month'] ?? '',
         week: json['week'] ?? '',
@@ -146,7 +151,7 @@ class InventoryItem {
         'date': date,
         'inputId': inputId,
         'name': name,
-        //'accountNameBranchManning': accountNameBranchManning,
+        'accountNameBranchManning': accountNameBranchManning,
         'period': period,
         'month': month,
         'week': week,

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously, deprecated_member_use, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, unused_local_variable
 
+import 'dart:ffi' hide Size;
+
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as M;
 import 'package:demo_app/login_screen.dart';
@@ -26,6 +28,7 @@ class _SignUpState extends State<SignUp> {
   var remarksController = TextEditingController();
   var selectedRemarks = 'REGULAR'; // Default choice
   var branchController = TextEditingController(text: 'Branch');
+  bool isActivate = false;
 
   String? fnameError;
   String? lnameError;
@@ -262,7 +265,8 @@ class _SignUpState extends State<SignUp> {
                             passwordController.text,
                             contactNumController.text,
                             branchController.text,
-                            selectedRemarks);
+                            selectedRemarks,
+                            isActivate);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Passwords do not match")),
@@ -313,15 +317,15 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future<void> _insertData(
-    String fName,
-    String lName,
-    String emailAdd,
-    String userN,
-    String pass, // Plain text password
-    String contact_num,
-    String branch,
-    String remarks,
-  ) async {
+      String fName,
+      String lName,
+      String emailAdd,
+      String userN,
+      String pass, // Plain text password
+      String contact_num,
+      String branch,
+      String remarks,
+      bool isActivate) async {
     var _id = M.ObjectId();
     final plainPassword = pass; // Store the plain text password for hashing
 
@@ -338,6 +342,7 @@ class _SignUpState extends State<SignUp> {
       password: hashedPassword,
       accountNameBranchManning: branch,
       remarks: remarks,
+      isActivate: isActivate,
       // Store the hashed password
     );
     var result = await MongoDatabase.insert(data);
