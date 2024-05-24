@@ -106,20 +106,6 @@ class _AddInventoryState extends State<AddInventory> {
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
-            // leading: IconButton(
-            //   icon: Icon(Icons.arrow_back),
-            //   onPressed: () {
-            //     Navigator.of(context).pushReplacement(
-            //       MaterialPageRoute(
-            //         builder: (context) => Inventory(
-            //           userName: widget.userName,
-            //           userLastName: widget.userLastName,
-            //           userEmail: widget.userEmail,
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
           ),
           body: SingleChildScrollView(
             child: Center(
@@ -141,14 +127,6 @@ class _AddInventoryState extends State<AddInventory> {
                         ),
                         SizedBox(height: 8),
                         Container(
-                          // decoration: BoxDecoration(
-                          //   border: Border(
-                          //     bottom: BorderSide(
-                          //       color: Colors.black,
-                          //       width: 1.0,
-                          //     ),
-                          //   ),
-                          // ),
                           child: Row(
                             children: [
                               Expanded(
@@ -1112,7 +1090,7 @@ class _SKUInventoryState extends State<SKUInventory> {
           .format(DateTime.now()), // Assuming current date for simplicity
       inputId: widget.inputid,
       name: '${widget.userName} ${widget.userLastName}',
-      //accountNameBranchManning: widget.selectedAccount,
+      accountNameBranchManning: widget.selectedAccount,
       period: widget.SelectedPeriod,
       month: widget.selectedMonth,
       week: widget.selectedWeek,

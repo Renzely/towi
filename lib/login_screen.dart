@@ -29,6 +29,17 @@ class _LoginPageState extends State<LoginPage> {
           await MongoDatabase.getUserDetailsByUsername(username);
       if (userDetails != null) {
         final String storedPasswordHash = userDetails['password'];
+        final bool isActivated = userDetails['isActivate'];
+
+        // Check if the user is activated
+        if (!isActivated) {
+          // User is deactivated, prevent login
+          setState(() {
+            usernameErrorText = '';
+            passwordErrorText = 'Account deactivated. Please contact admin.';
+          });
+          return; // Exit the method
+        }
 
         // Validate the password using the validatePassword function
         if (await validatePassword(password, storedPasswordHash)) {

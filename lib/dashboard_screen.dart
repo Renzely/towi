@@ -172,10 +172,10 @@ class _InventoryState extends State<Inventory> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ),
-                            // Text(
-                            //   //'${item.accountNameBranchManning}',
-                            //   style: TextStyle(color: Colors.black),
-                            // ),
+                            Text(
+                              '${item.accountNameBranchManning}',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               'Period: ',
