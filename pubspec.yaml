@@ -18,6 +18,8 @@ dependencies:
   google_fonts: ^6.2.1
   mailer: ^6.1.0
   email_otp: ^2.1.2
+  pinput: ^4.0.0
+  flutter_email_sender: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +35,11 @@ flutter:
     - assets/images/Studio-Project-nobg.png
     - assets/images/2x2_YNSON.png
     - assets/images/bmp.png
+
+  plugin:
+    androidPackage: com.arthenica.mobilemailclient
+    androidMinSdkVersion: 21
+    iosBundleIdentifier: com.arthenica.mobilemailclient
 
 flutter_launcher_icons:
   android: "launcher_icon"

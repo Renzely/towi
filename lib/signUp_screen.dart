@@ -19,6 +19,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   var fnameController = TextEditingController();
+  var mnameController = TextEditingController();
   var lnameController = TextEditingController();
   var addressController = TextEditingController();
   var usernameController = TextEditingController();
@@ -49,7 +50,7 @@ class _SignUpState extends State<SignUp> {
         // Wrap the Column with SingleChildScrollView
         child: Center(
           child: Container(
-            height: 1060,
+            height: 1100,
             width: 500,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -129,6 +130,19 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     errorText: fnameError,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  obscureText: false,
+                  controller: mnameController,
+                  decoration: InputDecoration(
+                    hintText: 'Middle Name (Optional)',
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20), // Add space between fields
@@ -259,6 +273,7 @@ class _SignUpState extends State<SignUp> {
                           confirmPassController.text) {
                         _insertData(
                             fnameController.text,
+                            mnameController.text,
                             lnameController.text,
                             addressController.text,
                             usernameController.text,
@@ -318,6 +333,7 @@ class _SignUpState extends State<SignUp> {
 
   Future<void> _insertData(
       String fName,
+      String mName,
       String lName,
       String emailAdd,
       String userN,
@@ -335,6 +351,7 @@ class _SignUpState extends State<SignUp> {
     final data = MongoDemo(
       id: _id,
       firstName: fName,
+      middleName: mName,
       lastName: lName,
       emailAddress: emailAdd,
       contactNum: contact_num,
