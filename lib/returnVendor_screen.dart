@@ -32,8 +32,58 @@ class _ReturnVendorState extends State<ReturnVendor> {
   String plateNumber = '';
   String pullOutReason = '';
   String selectedCategory = '';
-
+  List<String> outletOptions = [];
   List<String> itemOptions = [];
+
+  // Add fetchOutlets method to fetch outlets from the database
+  Future<void> fetchOutlets() async {
+    try {
+      final db = await mongo.Db.create(INVENTORY_CONN_URL);
+      await db.open();
+
+      final collection = db.collection(USER_COLLECTION);
+      final Map<String, dynamic>? userDoc = await collection
+          .findOne(mongo.where.eq('email_Address', widget.userEmail));
+
+      if (userDoc != null) {
+        print('User document found: $userDoc');
+        setState(() {
+          outletOptions = userDoc['accountNameBranchManning']
+              .cast<String>(); // Convert to List<String>
+          selectedOutlet = outletOptions.isNotEmpty ? outletOptions.first : '';
+        });
+      } else {
+        print('No user document found for email: ${widget.userEmail}');
+      }
+
+      await db.close();
+    } catch (e) {
+      print('Error fetching outlets from database: $e');
+    }
+  }
+
+  void fetchDataFromDatabase(String userEmail) async {
+    try {
+      final db = await mongo.Db.create(INVENTORY_CONN_URL);
+      await db.open();
+
+      final collection = db.collection(USER_COLLECTION);
+      final Map<String, dynamic>? userDoc =
+          await collection.findOne(mongo.where.eq('email_Address', userEmail));
+
+      if (userDoc != null) {
+        setState(() {
+          selectedOutlet = userDoc['accountNameBranchManning'][0] ?? '';
+          // Assuming you want to select the first item in the array
+          // Modify the index as needed based on your data structure
+        });
+      }
+
+      await db.close();
+    } catch (e) {
+      print('Error fetching data from database: $e');
+    }
+  }
 
   Map<String, List<String>> _categoryToSkuDescriptions = {
     'V1': [
@@ -49,19 +99,15 @@ class _ReturnVendorState extends State<ReturnVendor> {
       // Add more SKU descriptions...
     ],
   };
-  List<String> outletOptions = [
-    'PUREGOLD PRICE CLUB(JR.)- OLD CENTRO',
-    'PUROGOLD PRICE CLUB(JR.)- PAM PLAZA',
-    'PUREGOD PRICE CLUB - BAGUIO',
-  ];
-  @override
+
   void initState() {
     super.initState();
-    selectedOutlet = outletOptions.isNotEmpty ? outletOptions.first : '';
+    fetchDataFromDatabase(widget.userEmail);
     if (_categoryToSkuDescriptions.isNotEmpty) {
       selectedCategory = _categoryToSkuDescriptions.keys.first;
     }
     updateItemOptions(selectedCategory);
+    fetchOutlets(); // Call fetchOutlets when the widget is initialized
   }
 
   void updateItemOptions(String category) {
@@ -220,13 +266,15 @@ class _ReturnVendorState extends State<ReturnVendor> {
                       child: Text(outlet),
                     );
                   }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedOutlet = newValue;
-                      });
-                    }
-                  },
+                  onChanged: outletOptions.length == 1
+                      ? null // Disable the dropdown if there's only one outlet
+                      : (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              selectedOutlet = newValue;
+                            });
+                          }
+                        },
                 ),
                 SizedBox(height: 16),
                 Text(

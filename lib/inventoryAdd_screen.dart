@@ -64,6 +64,54 @@ class _AddInventoryState extends State<AddInventory> {
     fetchBranches();
   }
 
+  Future<void> fetchBranches() async {
+    try {
+      final db = await mongo.Db.create(INVENTORY_CONN_URL);
+      await db.open();
+      final collection = db.collection(USER_COLLECTION);
+      final List<Map<String, dynamic>> branchDocs = await collection
+          .find(mongo.where.eq('email_Address', widget.userEmail))
+          .toList();
+      setState(() {
+        // Extract accountNameBranchManning from branchDocs and handle both single string and list cases
+        _branchList = branchDocs
+            .map((doc) => doc['accountNameBranchManning'])
+            .where((branch) => branch != null)
+            .expand((branch) => branch is List ? branch : [branch])
+            .map((branch) => branch.toString())
+            .toList();
+        _selectedAccount = _branchList.isNotEmpty ? _branchList.first : '';
+      });
+      await db.close();
+    } catch (e) {
+      print('Error fetching branch data: $e');
+    }
+  }
+
+  Future<void> fetchBranchForUser(String userEmail) async {
+    try {
+      final db = await mongo.Db.create(INVENTORY_CONN_URL);
+      await db.open();
+      final collection = db.collection(USER_COLLECTION);
+      final Map<String, dynamic>? userData =
+          await collection.findOne(mongo.where.eq('email_Address', userEmail));
+      if (userData != null) {
+        final branchData = userData['accountNameBranchManning'];
+        setState(() {
+          _selectedAccount = branchData is List
+              ? branchData.first.toString()
+              : branchData.toString();
+          _branchList = branchData is List
+              ? branchData.map((branch) => branch.toString()).toList()
+              : [branchData.toString()];
+        });
+      }
+      await db.close();
+    } catch (e) {
+      print('Error fetching branch data for user: $e');
+    }
+  }
+
   @override
   void dispose() {
     _dateController.dispose();
@@ -79,18 +127,6 @@ class _AddInventoryState extends State<AddInventory> {
     var paddedRandom =
         random.toString().padLeft(4, '0'); // Ensure it has 4 digits
     return '2000$paddedRandom';
-  }
-
-  Future<void> fetchBranches() async {
-    final data = await MongoDatabase.getBranchData();
-    if (mounted) {
-      setState(() {
-        _branchList = data
-            .map<String>(
-                (branch) => branch['accountNameBranchManning'] as String)
-            .toList();
-      });
-    }
   }
 
   @override
@@ -198,18 +234,16 @@ class _AddInventoryState extends State<AddInventory> {
                                           child: Text(branch),
                                         );
                                       }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedAccount = value;
-                                          _isSaveEnabled =
-                                              _selectedAccount != null &&
-                                                  _selectedPeriod != null;
-                                        });
-                                        // Disable dropdown if only one item is available
-                                        if ((_branchList?.length ?? 0) <= 1) {
-                                          return null;
-                                        }
-                                      },
+                                      onChanged: _branchList.length > 1
+                                          ? (value) {
+                                              setState(() {
+                                                _selectedAccount = value;
+                                                _isSaveEnabled =
+                                                    _selectedAccount != null &&
+                                                        _selectedPeriod != null;
+                                              });
+                                            }
+                                          : null, // Disable onChange when there is only one branch
                                       decoration: InputDecoration(
                                         hintText: 'Select',
                                         border: InputBorder.none,

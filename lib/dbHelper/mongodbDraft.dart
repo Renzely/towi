@@ -12,6 +12,7 @@ class MongoDemo {
   final ObjectId id;
   final String remarks;
   final String firstName;
+  final String middleName;
   final String lastName;
   final String emailAddress;
   final String contactNum;
@@ -24,6 +25,7 @@ class MongoDemo {
     required this.remarks,
     required this.id,
     required this.firstName,
+    required this.middleName,
     required this.lastName,
     required this.emailAddress,
     required this.contactNum,
@@ -38,6 +40,7 @@ class MongoDemo {
       id: json['_id'],
       remarks: json['remarks'],
       firstName: json['firstName'],
+      middleName: json['middleName'],
       lastName: json['lastName'],
       emailAddress: json['email_Address'],
       contactNum: json['contactNum'],
@@ -52,6 +55,7 @@ class MongoDemo {
         '_id': id,
         'remarks': remarks,
         'firstName': firstName,
+        'middleName': middleName,
         'lastName': lastName,
         'email_Address': emailAddress,
         'contactNum': contactNum,
